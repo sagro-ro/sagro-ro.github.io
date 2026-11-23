@@ -1,0 +1,33 @@
+---
+import type { MediaRecord } from '../../data/media';
+import type { EnquiryType } from '../../data/site';
+import { enquiryHref } from '../../lib/enquiry';
+import SourceImage from '../media/SourceImage.astro';
+import ButtonLink from '../site/ButtonLink.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  image: MediaRecord;
+  type: EnquiryType;
+  note: string;
+}
+const { eyebrow, title, intro, image, type, note } = Astro.props;
+---
+<section class="page-hero">
+  <div class="container page-hero__grid">
+    <div class="page-hero__copy">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      <p class="page-hero__intro">{intro}</p>
+      <ButtonLink href={enquiryHref(type)} variant={type === 'service' ? 'secondary' : 'primary'}>
+        {type === 'service' ? 'Solicită service' : 'Cere o evaluare'}
+      </ButtonLink>
+    </div>
+    <div class="page-hero__visual">
+      <SourceImage record={image} widths={[480, 768, 1200, 1536]} sizes="(min-width: 1024px) 48vw, 100vw" />
+      <p>{note}</p>
+    </div>
+  </div>
+</section>

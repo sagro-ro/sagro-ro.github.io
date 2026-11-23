@@ -1,0 +1,138 @@
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+body {
+  margin: 0;
+  background: var(--color-limestone);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+main { min-height: 55vh; }
+img, picture, svg { display: block; max-width: 100%; }
+img { height: auto; }
+button, input, textarea, select { font: inherit; }
+button, select { cursor: pointer; }
+button { color: inherit; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+p, h1, h2, h3, h4, blockquote, figure { margin: 0; }
+p { max-width: var(--reading); }
+ul, ol { margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+:focus-visible {
+  outline: 3px solid var(--color-aqua);
+  outline-offset: 4px;
+}
+
+::selection { background: var(--color-aqua); color: var(--color-forest-deep); }
+
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: var(--space-4);
+  left: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-white);
+  color: var(--color-forest-deep);
+  transform: translateY(-250%);
+}
+.skip-link:focus { transform: translateY(0); }
+
+.container {
+  width: min(calc(100% - 2.5rem), var(--container));
+  margin-inline: auto;
+}
+.section { padding-block: clamp(var(--space-16), 9vw, var(--space-32)); }
+.section--compact { padding-block: clamp(var(--space-12), 6vw, var(--space-20)); }
+.section--paper { background: var(--color-paper); }
+.section--dark { background: var(--color-forest-deep); color: var(--color-white); }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-forest-soft);
+  font-size: var(--text-xs);
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.eyebrow::before { content: ''; width: 1.5rem; height: 1px; background: currentColor; }
+.section--dark .eyebrow, .on-dark .eyebrow { color: var(--color-aqua); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+  text-wrap: balance;
+}
+h1 { font-size: var(--text-display); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+strong { font-weight: 600; }
+
+/* Center editorial content while preserving operational reading order. */
+main, .site-footer { text-align: center; }
+main nav, main form, main [data-project-list-controls], .site-footer nav {
+  text-align: left;
+}
+main :is(h1, h2, h3, h4, p, blockquote), .site-footer p {
+  margin-inline: auto;
+  text-align: center;
+}
+main :is(nav, form, [data-project-list-controls]) :is(h1, h2, h3, h4, p, blockquote),
+.site-footer nav p {
+  margin-inline: 0;
+  text-align: left;
+}
+main .eyebrow { justify-content: center; }
+main :is(.hero__actions, .hero__disciplines, .contact-cta__actions) { justify-content: center; }
+main :is(
+  .hero__actions,
+  .hero__copy > .button,
+  .page-hero__copy > .button,
+  .systems__support > .button,
+  .project-preview__top > .button,
+  .offering-crosslink__inner > .button,
+  .journey > .button
+) { justify-self: center; }
+main :is(.journey__icon, .process__number, .offering-item__index) { justify-self: center; }
+main :is(.contact-intro__routes > a, .faq-list summary) { justify-content: center; }
+
+.text-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-forest);
+  font-weight: 600;
+  text-decoration: none;
+}
+.text-link:hover { text-decoration: underline; }
+.text-link svg { width: 1rem; height: 1rem; }
+
+@media (min-width: 48rem) {
+  .container { width: min(calc(100% - 5rem), var(--container)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

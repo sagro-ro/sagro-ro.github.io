@@ -1,0 +1,40 @@
+---
+import BrandMark from './BrandMark.astro';
+import { primaryRoutes, legalRoutes } from '../../data/routes';
+import { site } from '../../data/site';
+---
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div class="footer-intro">
+      <BrandMark light />
+      <p>Sisteme de irigații adaptate terenului, de la consultanță și instalare la service și mentenanță.</p>
+    </div>
+    <nav aria-label="Navigație subsol">
+      <p class="footer-title">Navigație</p>
+      <ul class="footer-links">
+        {primaryRoutes.map((route) => <li><a href={route.href}>{route.label}</a></li>)}
+      </ul>
+    </nav>
+    <div>
+      <p class="footer-title">Informații</p>
+      <ul class="footer-links">
+        <li><a href="/sisteme-irigatii/#proces">Cum lucrăm</a></li>
+        <li><a href="/proiecte/">Proiecte documentate</a></li>
+        {legalRoutes.map((route) => <li><a href={route.href}>{route.label}</a></li>)}
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <p class="footer-title">Hai să discutăm</p>
+      <a href={site.phoneHref}>{site.phoneDisplay}</a>
+      <a href={site.emailHref}>{site.email}</a>
+      <p>{site.address}</p>
+    </div>
+  </div>
+  <div class="container footer-legal">
+    <p>© 2026 {site.legalName} · {site.registration.join(' · ')}</p>
+    <div class="footer-legal__links">
+      <a href="/politica-confidentialitate/">Confidențialitate</a>
+      <a href="/termeni-conditii/">Termeni</a>
+    </div>
+  </div>
+</footer>

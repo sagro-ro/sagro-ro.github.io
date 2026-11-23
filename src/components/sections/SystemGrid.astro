@@ -1,0 +1,69 @@
+---
+import { media, type MediaRecord } from '../../data/media';
+import SourceImage from '../media/SourceImage.astro';
+import ButtonLink from '../site/ButtonLink.astro';
+import SectionHeading from '../site/SectionHeading.astro';
+
+interface SystemItem {
+  title: string;
+  description: string;
+  image: MediaRecord;
+  photographic?: boolean;
+}
+const systems: readonly SystemItem[] = [
+  {
+    title: 'Pivoți centrali',
+    description: 'Irigare prin aspersie pentru suprafețe întinse, configurată în funcție de parcelă, cultură și resursa de apă.',
+    image: media.pivotArt,
+  },
+  {
+    title: 'Sisteme liniare',
+    description: 'Deplasare liniară pentru parcelele la care traseul și geometria terenului cer acest tip de soluție.',
+    image: media.heroPivot,
+    photographic: true,
+  },
+  {
+    title: 'Sisteme cu tambur',
+    description: 'Mașini mobile de irigat cu furtun, evaluate după condițiile de lucru și modul de utilizare din fermă.',
+    image: media.reelArt,
+  },
+  {
+    title: 'Pompare și alimentare',
+    description: 'Componentele de pompare se aleg în corelație cu sursa de apă și cerințele întregii instalații.',
+    image: media.pumpArt,
+  },
+];
+---
+<section class="section systems" data-section="systems">
+  <div class="container">
+    <SectionHeading
+      eyebrow="Sisteme de irigații"
+      title="Tehnologia urmează terenul."
+      intro="Nu există o configurație universală. Forma parcelei, cultura, apa și energia disponibilă ghidează alegerea."
+    />
+    <ul class="system-grid">
+      {systems.map((system, index) => (
+        <li class="system-item" data-system-item data-reveal>
+          <div class:list={['system-item__art', { 'system-item__art--photo': system.photographic }]}>
+            <SourceImage
+              record={system.image}
+              widths={system.photographic ? [480, 800, 1200] : [200, 400]}
+              sizes="(min-width: 1120px) 25vw, (min-width: 640px) 50vw, 100vw"
+            />
+          </div>
+          <p class="system-item__number">/{String(index + 1).padStart(2, '0')}</p>
+          <h3>{system.title}</h3>
+          <p>{system.description}</p>
+        </li>
+      ))}
+    </ul>
+    <div class="systems__support">
+      <div>
+        <p class="eyebrow">Energie în câmp</p>
+        <h3>Și unde rețeaua electrică nu ajunge?</h3>
+        <p>Analizăm și opțiunea unui grup electrogen pentru alimentarea instalației, în funcție de necesarul tehnic.</p>
+      </div>
+      <ButtonLink href="/sisteme-irigatii/" variant="secondary">Explorează sistemele</ButtonLink>
+    </div>
+  </div>
+</section>

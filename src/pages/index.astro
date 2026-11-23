@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import JourneyCards from '../components/sections/JourneyCards.astro';
+import ProcessSteps from '../components/sections/ProcessSteps.astro';
+import SystemGrid from '../components/sections/SystemGrid.astro';
+import PartnerStrip from '../components/sections/PartnerStrip.astro';
+import FaqList from '../components/sections/FaqList.astro';
+import ContactCta from '../components/sections/ContactCta.astro';
+import SectionHeading from '../components/site/SectionHeading.astro';
+import ButtonLink from '../components/site/ButtonLink.astro';
+import ProjectMap from '../components/projects/ProjectMap.astro';
+import { homeFaqs } from '../content/faqs';
+import '../styles/sections.css';
+import '../styles/project-map.css';
+---
+<BaseLayout title="Sisteme de irigații și service pentru ferme" description="Proiectare și instalare de sisteme de irigații, service și mentenanță pentru echipamente agricole de irigat în România.">
+  <Hero />
+  <JourneyCards />
+  <SystemGrid />
+  <ProcessSteps />
+  <section class="section project-preview" data-home-projects>
+    <div class="container">
+      <div class="project-preview__top">
+        <SectionHeading
+          dark
+          eyebrow="Proiecte documentate"
+          title="Soluții puse în funcțiune în România."
+          intro="Trei experiențe prezentate de Sagro, cu locațiile indicate doar la nivel de județ."
+        />
+        <ButtonLink href="/proiecte/" variant="light">Vezi proiectele</ButtonLink>
+      </div>
+      <ProjectMap compact />
+    </div>
+  </section>
+  <PartnerStrip />
+  <FaqList items={homeFaqs} />
+  <ContactCta />
+  <script>
+    import { initReveals } from '../scripts/reveal';
+    initReveals();
+  </script>
+</BaseLayout>

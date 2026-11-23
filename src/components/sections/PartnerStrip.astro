@@ -1,0 +1,23 @@
+---
+import { media } from '../../data/media';
+import SourceImage from '../media/SourceImage.astro';
+---
+<section class="section--compact partners" aria-labelledby="partners-title">
+  <div class="container partners__inner">
+    <div class="partners__intro">
+      <p class="eyebrow">Tehnologii prezentate de Sagro</p>
+      <h2 id="partners-title">Echipamente și referinți din câmp.</h2>
+    </div>
+    <ul class="partner-list" data-partners>
+      {[media.zimmatic, media.idrofoglia, media.greenPower].map((partner) => (
+        <li>
+          <SourceImage
+            record={partner}
+            widths={[240, 480, 600]}
+            sizes="(min-width: 768px) 20vw, 33vw"
+          />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+---
+export interface Props {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  dark?: boolean;
+}
+const { eyebrow, title, intro, dark = false } = Astro.props;
+---
+<header class:list={['section-heading', { 'section-heading--dark': dark }]} data-reveal>
+  <p class="eyebrow">{eyebrow}</p>
+  <h2>{title}</h2>
+  {intro && <p class="section-heading__intro">{intro}</p>}
+</header>

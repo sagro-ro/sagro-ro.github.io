@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ProcessSteps from '../components/sections/ProcessSteps.astro';
+import PartnerStrip from '../components/sections/PartnerStrip.astro';
+import ContactCta from '../components/sections/ContactCta.astro';
+import SectionHeading from '../components/site/SectionHeading.astro';
+import SourceImage from '../components/media/SourceImage.astro';
+import { media } from '../data/media';
+import { energySupport, selectionFactors, systems } from '../data/systems';
+import { ArrowRight } from '@lucide/astro';
+import '../styles/sections.css';
+import '../styles/offerings.css';
+---
+<BaseLayout
+  title="Sisteme de irigații proiectate pentru terenul fermei | Sagro"
+  description="Pivoți centrali, sisteme liniare, sisteme cu tambur și pompare, cu analiză, configurare, instalare și punere în funcțiune."
+>
+  <PageHero
+    eyebrow="Sisteme de irigații"
+    title="Sisteme de irigații adaptate terenului."
+    intro="De la analiza parcelei la punerea în funcțiune, soluția se construiește în jurul culturii, apei și condițiilor reale din fermă."
+    image={media.heroPivot}
+    type="instalare"
+    note="Imagine editorială Zimmatic din materialele publicate de Sagro; nu documentează o instalație anume."
+  />
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Patru direcții tehnice"
+        title="Alegem configurația după context."
+        intro="Fiecare abordare are un mod diferit de lucru. Evaluarea prealabilă ajută la alegerea unei soluții coerente cu terenul și resursele disponibile."
+      />
+      <div class="offering-list">
+        {systems.map((system, index) => (
+          <article class="offering-item" data-offering-key={system.key} data-reveal>
+            <span class="offering-item__index">SISTEM / {String(index + 1).padStart(2, '0')}</span>
+            <div class="offering-item__content">
+              <h2>{system.title}</h2>
+              <p class="offering-item__summary">{system.summary}</p>
+              <p>{system.detail}</p>
+            </div>
+            <div class:list={['offering-item__art', { 'offering-item__art--photo': system.photographic }]}>
+              <SourceImage
+                record={media[system.mediaKey]}
+                widths={system.photographic ? [480, 800, 1200] : [200, 400]}
+                sizes="(min-width: 1024px) 28vw, 100vw"
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+      <aside class="energy-support" data-reveal>
+        <div>
+          <p class="eyebrow">Alimentare în câmp</p>
+          <h2>{energySupport.title}</h2>
+          <p>{energySupport.description}</p>
+        </div>
+        <SourceImage record={media.irrigationEquipment} widths={[480, 768, 1200, 1536]} sizes="(min-width: 1024px) 32vw, 100vw" />
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--paper" aria-labelledby="selection-title">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Ce analizăm"
+        title="Cinci repere înainte de configurare."
+        intro="O discuție bine pregătită începe cu informațiile pe care le ai deja despre parcelă și instalația dorită."
+      />
+      <ol class="factor-grid">
+        {selectionFactors.map((factor) => (
+          <li><h3>{factor.title}</h3><p>{factor.description}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <ProcessSteps
+    title="De la consultanță la un sistem funcțional."
+    intro="Configurarea, instalarea și punerea în funcțiune se urmăresc în aceeași poveste, fără a presupune că două ferme sunt identice."
+  />
+
+  <section class="offering-crosslink">
+    <div class="container offering-crosslink__inner">
+      <div>
+        <h2>Ai deja un sistem care are nevoie de atenție?</h2>
+        <p>Service și mentenanță pentru echipamentele de irigații, pornind de la situația observată.</p>
+      </div>
+      <a class="button button--secondary" href="/service-mentenanta/" data-service-link>
+        Descoperă service-ul <ArrowRight aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+  <PartnerStrip />
+  <ContactCta enquiryType="instalare" />
+
+  <script>
+    import { initReveals } from '../scripts/reveal';
+    initReveals();
+  </script>
+</BaseLayout>

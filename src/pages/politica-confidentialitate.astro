@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { normalizeFormEndpoint } from '../lib/contact-validation';
+import '../styles/legal.css';
+
+const formConfigured = normalizeFormEndpoint(import.meta.env.PUBLIC_FORM_ENDPOINT) !== null;
+---
+<BaseLayout
+  title="Politica de confidențialitate"
+  description="Informații despre resursele locale, harta României, contactul direct și prelucrarea datelor transmise prin formularul Sagro Irigații."
+>
+  <header class="legal-hero">
+    <div class="container">
+      <p class="eyebrow">Confidențialitate</p>
+      <h1>Datele tale, explicate clar.</h1>
+      <p>Această pagină descrie funcționarea actuală a site-ului Sagro Irigații și datele pe care alegi să ni le transmiți.</p>
+    </div>
+  </header>
+
+  <article class="legal-body">
+    <div class="container legal-prose">
+      <section>
+        <h2>Cine administrează site-ul</h2>
+        <p>Site-ul prezintă activitatea {site.legalName}, cu sediul în {site.address}. Pentru întrebări despre datele tale, ne poți scrie la <a href={site.emailHref}>{site.email}</a> sau ne poți suna la <a href={site.phoneHref}>{site.phoneDisplay}</a>.</p>
+      </section>
+
+      <section>
+        <h2>Resurse locale și instrumente de analiză</h2>
+        <p>Imaginile, fonturile și celelalte resurse ale interfeței sunt stocate și servite local, împreună cu site-ul. Nu folosim instrumente de analiză sau profilare publicitară și nu instalăm cookie-uri de urmărire prin acest site.</p>
+        <p>Când deschizi o pagină, infrastructura de găzduire poate înregistra date tehnice necesare livrării și securității conexiunii, precum adresa IP și informații despre cerere. Politica furnizorului de găzduire se aplică separat acestor jurnale tehnice.</p>
+      </section>
+
+      <section>
+        <h2>Harta proiectelor</h2>
+        <p>Geometria hărții României este inclusă în site, nu descărcată de la un serviciu extern la fiecare vizită. Hartă bazată pe <a href="https://mapsvg.com/maps/romania" target="_blank" rel="noopener noreferrer">MapSVG</a>, prin pachetul <code>@svg-maps/romania</code>, sub licența <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
+        <p>Nu solicităm locația dispozitivului. Marcajele arată zone aproximative la nivel de județ, nu adrese exacte ale instalațiilor. Linkurile către sursă și licență deschid site-urile respective numai dacă alegi să le accesezi.</p>
+      </section>
+
+      <section>
+        <h2>Telefon și e-mail</h2>
+        <p>Linkurile de contact nu trimit automat date către noi. Un link de telefon deschide aplicația de telefon a dispozitivului, iar unul de e-mail deschide aplicația de e-mail. Mesajul ajunge la noi numai după ce inițiezi apelul sau trimiți efectiv e-mailul.</p>
+      </section>
+
+      <section>
+        <h2>Formularul de solicitare</h2>
+        {formConfigured ? (
+          <p>Formularul poate trimite datele către adresa tehnică HTTP(S) configurată la publicarea site-ului, numai după validare și acționarea butonului de trimitere.</p>
+        ) : (
+          <p><strong>Formularul online nu este conectat în versiunea curentă.</strong> Câmpurile și trimiterea sunt dezactivate, iar datele introduse nu sunt transmise prin formular. Poți folosi telefonul sau e-mailul afișat pe pagina de contact.</p>
+        )}
+        <p>Atunci când formularul este activ, sunt tratate tipul solicitării, numele, telefonul, adresa de e-mail și județul dacă le completezi, mesajul, confirmarea acordului și momentul trimiterii generate de browser. Câmpul ascuns de control anti-spam este verificat înaintea unei cereri și nu este destinat completării de către vizitatori.</p>
+        <p>Datele sunt trimise la un endpoint configurat <strong>doar dacă</strong> acesta există și este valid. Un răspuns de eroare sau o întrerupere a conexiunii nu este afișat ca o trimitere reușită. Înainte de activarea unui furnizor de formulare, această pagină trebuie completată cu informațiile specifice despre prelucrarea și stocarea realizată de acel serviciu.</p>
+        <p>Nu trimite prin formular date sensibile sau informații care nu sunt necesare evaluării solicitării. Pentru exercitarea drepturilor aplicabile privind datele cu caracter personal, contactează-ne folosind datele de mai sus.</p>
+      </section>
+
+      <section>
+        <h2>Actualizarea acestor informații</h2>
+        <p>Dacă se adaugă instrumente de analiză, servicii externe de hărți sau un furnizor de formulare, descrierea acestora și eventualele mecanisme de consimțământ trebuie actualizate înainte de activare. Ultima revizuire a acestei pagini: 12 noiembrie 2026.</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,46 @@
+---
+import { Menu, X, Phone } from '@lucide/astro';
+import BrandMark from './BrandMark.astro';
+import ButtonLink from './ButtonLink.astro';
+import { primaryRoutes } from '../../data/routes';
+import { site } from '../../data/site';
+import { enquiryHref } from '../../lib/enquiry';
+const pathname = Astro.url.pathname;
+const isActive = (href: string) => href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <BrandMark />
+    <nav class="desktop-navigation" aria-label="Navigație principală">
+      <ul>
+        {primaryRoutes.map((route) => (
+          <li><a href={route.href} aria-current={isActive(route.href) ? 'page' : undefined}>{route.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <ButtonLink href={enquiryHref('instalare')} class="header-cta">Cere o evaluare</ButtonLink>
+    <button class="menu-toggle" type="button" data-menu-toggle aria-label="Deschide meniul" aria-controls="navigatie-mobila" aria-expanded="false">
+      <Menu class="icon-open" aria-hidden="true" /><X class="icon-close" aria-hidden="true" />
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="navigatie-mobila" data-mobile-menu hidden>
+  <div class="container mobile-menu__inner">
+    <nav aria-label="Navigație mobilă">
+      {primaryRoutes.map((route, index) => (
+        <a href={route.href} aria-current={isActive(route.href) ? 'page' : undefined}>
+          <span class="route-index" aria-hidden="true">0{index + 1}</span><span>{route.label}</span>
+        </a>
+      ))}
+    </nav>
+    <div class="mobile-menu__contact">
+      <a href={site.phoneHref}><Phone size={20} aria-hidden="true" /> {site.phoneDisplay}</a>
+      <p>{site.address}</p>
+      <ButtonLink href={enquiryHref('instalare')} variant="light">Cere o evaluare</ButtonLink>
+    </div>
+  </div>
+</div>
+<script>
+  import { initSiteMenu } from '../../scripts/site-menu';
+  initSiteMenu();
+</script>

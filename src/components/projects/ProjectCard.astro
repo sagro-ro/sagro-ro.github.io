@@ -1,0 +1,32 @@
+---
+import type { Project } from '../../data/projects';
+
+interface Props {
+  project: Project;
+  compact?: boolean;
+}
+const { project, compact = false } = Astro.props;
+const Heading = compact ? 'h3' : 'h2';
+---
+<article
+  class="project-story"
+  id={`proiect-${project.slug}`}
+  data-project-story
+  data-project-preview
+  data-reveal
+>
+  <header class="project-story__header">
+    <p class="project-story__location">{project.countyLabel} / {project.clientLabel}</p>
+    <Heading>{project.name}</Heading>
+    <p class="project-story__system">{project.systemLabel}</p>
+  </header>
+  <p class="project-story__summary">{project.summary}</p>
+  <blockquote><p>„{project.quote}”</p></blockquote>
+  <footer>
+    {!compact && (
+      <a class="text-link project-source" href={project.sourceUrl} target="_blank" rel="noopener noreferrer">
+        Sursa: pagina Sagro despre irigații
+      </a>
+    )}
+  </footer>
+</article>

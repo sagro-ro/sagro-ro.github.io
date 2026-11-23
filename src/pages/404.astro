@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ArrowRight } from '@lucide/astro';
+import '../styles/legal.css';
+---
+<BaseLayout
+  title="Pagina nu a fost găsită"
+  description="Pagina căutată nu există. Revino la sistemele de irigații, proiectele documentate sau contactează Sagro pentru instalare și service."
+  noindex
+>
+  <section class="recovery-page">
+    <div class="container recovery-page__layout">
+      <p class="recovery-page__code" aria-hidden="true">404</p>
+      <div class="recovery-page__content">
+        <p class="eyebrow">Ne-am abătut de la traseu</p>
+        <h1>Pagina nu a fost găsită.</h1>
+        <p>Adresa poate fi incompletă sau pagina a fost mutată. Alege una dintre direcțiile de mai jos pentru a continua.</p>
+        <nav class="recovery-page__links" aria-label="Pagini utile">
+          <a href="/">Acasă <ArrowRight aria-hidden="true" /></a>
+          <a href="/sisteme-irigatii/">Sisteme de irigații <ArrowRight aria-hidden="true" /></a>
+          <a href="/service-mentenanta/">Service și mentenanță <ArrowRight aria-hidden="true" /></a>
+          <a href="/contact/">Contact <ArrowRight aria-hidden="true" /></a>
+        </nav>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

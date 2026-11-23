@@ -1,0 +1,103 @@
+.project-map { display: grid; gap: var(--space-10); }
+.project-map__geography { min-width: 0; }
+.project-map__canvas { position: relative; width: 100%; aspect-ratio: 613 / 433; }
+.project-map__canvas > svg { width: 100%; height: 100%; overflow: visible; }
+.project-map__canvas path { fill: var(--color-forest-soft); stroke: var(--color-aqua-light); stroke-width: 0.6; vector-effect: non-scaling-stroke; transition: fill 180ms ease, stroke 180ms ease; }
+.project-map__canvas path.project-county { fill: #367c68; }
+.project-map__canvas path[data-selected-county] { fill: var(--color-aqua); stroke: var(--color-white); stroke-width: 1.5; }
+.project-map__controls { position: absolute; inset: 0; pointer-events: none; }
+.map-marker {
+  position: absolute;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 5px;
+  place-items: center;
+  border: 2px solid var(--color-forest-deep);
+  border-radius: 50%;
+  background: var(--color-aqua);
+  color: var(--color-forest-deep);
+  box-shadow: 0 0 0 2px var(--color-aqua-light);
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  transition: background 180ms ease, box-shadow 180ms ease;
+}
+.map-marker svg { width: 24px; height: 24px; stroke-width: 1.5; }
+.map-marker > span { position: absolute; bottom: -1.35rem; padding: 0 0.2rem; background: var(--color-forest-deep); color: var(--color-white); font-size: 0.62rem; font-weight: 600; line-height: 1.4; pointer-events: none; }
+.map-marker[aria-pressed='true'] { background: var(--color-lime); box-shadow: 0 0 0 3px var(--color-lime); }
+.map-marker:hover { background: var(--color-aqua-light); }
+.map-marker[aria-pressed='true']:hover { background: var(--color-lime); }
+.project-map__key { display: flex; align-items: center; gap: var(--space-2); margin-top: var(--space-4); color: var(--color-aqua-light); font-size: var(--text-xs); }
+.project-map__key > span { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--color-aqua); box-shadow: 0 0 0 2px var(--color-forest-deep), 0 0 0 3px var(--color-aqua); }
+.project-map__status { color: var(--color-aqua); font-size: var(--text-sm); }
+.project-map__status:empty { display: none; }
+
+.project-map__content { min-width: 0; }
+.project-list-controls { display: grid; gap: var(--space-2); margin-bottom: var(--space-5); }
+.project-list-controls button { display: grid; min-height: 54px; gap: var(--space-1); padding: var(--space-3) var(--space-4); border: 1px solid var(--color-line-dark); background: transparent; color: var(--color-aqua-light); text-align: left; }
+.project-list-controls button > span:last-child { font-size: var(--text-xs); }
+.project-list-controls button[aria-pressed='true'] { border-color: var(--color-aqua); background: var(--color-aqua); color: var(--color-forest-deep); }
+.project-list-controls button:hover { border-color: var(--color-aqua); }
+.project-stories { display: grid; gap: var(--space-8); }
+.project-story { display: grid; gap: var(--space-6); padding: clamp(var(--space-5), 4vw, var(--space-8)); background: var(--color-paper); color: var(--color-ink); }
+.project-story__header { display: grid; gap: var(--space-3); }
+.project-story__header h2, .project-story__header h3 { font-size: clamp(1.65rem, 3vw, 2.5rem); }
+.project-story__location { color: var(--color-forest-soft); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; }
+.project-story__system { color: var(--color-forest); font-size: var(--text-sm); font-weight: 600; }
+.project-story__summary { color: var(--color-muted); }
+.project-story blockquote { padding: var(--space-5) 0 var(--space-5) var(--space-5); border-left: 2px solid var(--color-aqua); }
+.project-story blockquote p { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 500; line-height: 1.4; }
+.project-story footer { border-top: 1px solid var(--color-line); }
+.project-story .project-source { font-size: var(--text-sm); }
+.project-story footer:empty { display: none; }
+.project-map__notes { display: grid; gap: var(--space-3); margin-top: var(--space-8); color: var(--color-aqua-light); font-size: var(--text-xs); }
+.project-map__notes a { color: var(--color-aqua-light); }
+.project-map__notes code { overflow-wrap: anywhere; }
+.projects-intro { padding-block: clamp(var(--space-12), 7vw, var(--space-24)) var(--space-12); background: var(--color-paper); }
+.projects-intro .eyebrow { margin-bottom: var(--space-5); }
+.projects-intro h1 { max-width: 11ch; font-size: clamp(2.8rem, 6vw, 6rem); }
+.projects-intro > .container > p:last-child { max-width: 60ch; margin-top: var(--space-6); color: var(--color-muted); font-size: var(--text-lg); }
+.projects-explorer { padding-block: var(--space-12) var(--space-20); background: var(--color-forest-deep); color: var(--color-white); }
+
+@media (max-width: 30rem) {
+  /* Keep the 44px controls usable without moving Călărași's geometry-derived anchor. */
+  .map-marker[data-project-slug='calarasi-ferma-vegetala'] {
+    transform: translate(calc(-50% - 2.75rem), -50%);
+  }
+  .map-marker[data-project-slug='calarasi-ferma-vegetala']::before {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    width: 1.375rem;
+    border-top: 1px dashed var(--color-aqua);
+    pointer-events: none;
+  }
+  .map-marker[data-project-slug='calarasi-ferma-vegetala']::after {
+    content: '';
+    position: absolute;
+    left: calc(100% + 1.375rem);
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-aqua-light);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+}
+@media (min-width: 48rem) {
+  .project-list-controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .project-list-controls button { min-height: 72px; }
+}
+@media (min-width: 64rem) {
+  .project-map { grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr); align-items: start; gap: var(--space-16); }
+  .project-map__geography { position: sticky; top: calc(var(--header-height) + 1.5rem); }
+  .project-map--compact { grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr); gap: var(--space-10); }
+  .project-map--compact .project-map__geography { position: static; }
+  .project-list-controls { grid-template-columns: 1fr; }
+}
+@media (forced-colors: active) {
+  .map-marker { border: 3px solid ButtonText; }
+  .map-marker[aria-pressed='true'] { outline: 3px solid Highlight; }
+}

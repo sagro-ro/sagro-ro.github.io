@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import '../styles/legal.css';
+---
+<BaseLayout
+  title="Termeni și condiții de utilizare"
+  description="Termeni generale pentru utilizarea site-ului Sagro Irigații, pentru interpretarea proiectelor și pentru solicitările de instalare ori service."
+>
+  <header class="legal-hero">
+    <div class="container">
+      <p class="eyebrow">Utilizarea site-ului</p>
+      <h1>Informațiile, în contextul potrivit.</h1>
+      <p>Acești termeni privesc consultarea site-ului și transmiterea unei solicitări. Nu înlocuiesc o ofertă sau un contract agreat pentru un proiect.</p>
+    </div>
+  </header>
+
+  <article class="legal-body">
+    <div class="container legal-prose">
+      <section>
+        <h2>Informații generale</h2>
+        <p>Conținutul oferă informații generale despre sistemele de irigații, service-ul și mentenanța echipamentelor, precum și despre proiectele documentate de {site.legalName}. Poți consulta paginile și ne poți contacta fără a crea un cont.</p>
+      </section>
+
+      <section>
+        <h2>Configurații, oferte și lucrări</h2>
+        <p>Descrierile tipurilor de sisteme nu reprezintă o recomandare tehnică finală pentru o anumită parcelă. Soluția se stabilește după analiza condițiilor reale, inclusiv suprafață, formă, cultură, sursă de apă, teren și disponibilitatea energiei.</p>
+        <p>O solicitare trimisă prin formular, e-mail sau telefon nu constituie acceptarea unei comenzi și nu stabilește un termen, un preț sau amploarea unei intervenții. Aceste elemente se confirmă separat, pe baza unei oferte sau a unui acord explicit.</p>
+      </section>
+
+      <section>
+        <h2>Proiecte și locații</h2>
+        <p>Cele trei exemple publicate provin din materialele deja documentate de Sagro. Marcajele hărții indică zone la nivel de județ și nu trebuie interpretate drept adrese exacte ale clienților sau instalațiilor.</p>
+        <p>Fotografiile și ilustrațiile editoriale explică echipamentele și contextul de utilizare. Dacă o imagine nu este asociată explicit unui proiect, ea nu constituie dovada configurației sau locației acelui proiect.</p>
+      </section>
+
+      <section>
+        <h2>Formular și contact direct</h2>
+        <p>Disponibilitatea formularului depinde de configurarea tehnică a site-ului. Dacă trimiterea online este dezactivată, poți folosi datele de contact publicate. Nu considera o solicitare recepționată decât atunci când site-ul confirmă un răspuns real sau când discuția este confirmată direct.</p>
+        <p>Este responsabilitatea ta să oferi informații corecte și să nu transmiți conținut ilegal, dăunător sau date pe care nu ai dreptul să le comunici.</p>
+      </section>
+
+      <section>
+        <h2>Materiale și mărci</h2>
+        <p>Textele, structura și materialele locale ale site-ului sunt folosite pentru prezentarea activității Sagro. Numele și mărcile Zimmatic, Idrofoglia și Green Power aparțin deținătorilor respectivi; menționarea lor nu reprezintă o declarație de certificare, exclusivitate sau garanție.</p>
+        <p>Harta utilizează geometrie distribuită sub licența <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>, cu atribuirea afișată lângă hartă. Sursele imaginilor și condițiile de atribuire sunt documentate în fișierul <code>THIRD_PARTY_NOTICES.md</code> al proiectului.</p>
+      </section>
+
+      <section>
+        <h2>Schimbări și întrebări</h2>
+        <p>Informațiile site-ului pot fi actualizate pe măsură ce oferta și documentația evoluează. Pentru clarificări despre conținut sau despre o solicitare, ne poți scrie la <a href={site.emailHref}>{site.email}</a> sau suna la <a href={site.phoneHref}>{site.phoneDisplay}</a>. Ultima revizuire: 12 noiembrie 2026.</p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

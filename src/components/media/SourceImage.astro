@@ -1,0 +1,45 @@
+---
+import { Image } from 'astro:assets';
+import type { MediaRecord } from '../../data/media';
+
+interface Props {
+  record: MediaRecord;
+  class?: string;
+  sizes?: string;
+  widths?: number[];
+  eager?: boolean;
+}
+
+const {
+  record,
+  class: className,
+  sizes = '(min-width: 1120px) 50vw, 100vw',
+  widths,
+  eager = false,
+} = Astro.props;
+
+const sources = import.meta.glob<ImageMetadata>('../../assets/**/*.{png,jpg,jpeg}', {
+  eager: true,
+  import: 'default',
+});
+const image = sources[record.src.replace('../assets/', '../../assets/')];
+if (!image) throw new Error(`Missing reviewed local media: ${record.src}`);
+
+const responsiveWidths = [...new Set(
+  (widths ?? [Math.round(image.width / 2), image.width])
+    .filter((width) => Number.isFinite(width) && width > 0 && width <= image.width),
+)].sort((a, b) => a - b);
+---
+<Image
+  src={image}
+  alt={record.alt}
+  width={image.width}
+  height={image.height}
+  widths={responsiveWidths}
+  sizes={sizes}
+  format="webp"
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : 'auto'}
+  decoding="async"
+  class={className}
+/>

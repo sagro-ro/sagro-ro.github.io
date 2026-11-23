@@ -1,0 +1,35 @@
+---
+import { Plus } from '@lucide/astro';
+import SectionHeading from '../site/SectionHeading.astro';
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+interface Props {
+  items: readonly FaqItem[];
+  title?: string;
+  intro?: string;
+}
+const {
+  items,
+  title = 'Întrebări înainte de primul pas.',
+  intro = 'Câteva repere pentru a pregăti discuția despre instalație sau intervenția de service.',
+} = Astro.props;
+---
+<section class="section section--paper faqs" data-faq>
+  <div class="container faqs__grid">
+    <SectionHeading eyebrow="Întrebări frecvente" title={title} intro={intro} />
+    <div class="faq-list">
+      {items.map((item) => (
+        <details data-reveal>
+          <summary>
+            <span>{item.question}</span>
+            <Plus aria-hidden="true" />
+          </summary>
+          <div class="faq-answer"><p>{item.answer}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

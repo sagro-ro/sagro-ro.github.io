@@ -1,0 +1,14 @@
+---
+import SourceImage from '../media/SourceImage.astro';
+import { media } from '../../data/media';
+export interface Props {
+  light?: boolean;
+}
+const { light = false } = Astro.props;
+---
+<a class:list={['site-brand', { 'site-brand--light': light }]} href="/" data-brand aria-label="Sagro Irigații — Acasă">
+  <span class="brand-lockup">
+    <SourceImage record={media.logo} class="brand-image" widths={[160, 320]} sizes="155px" />
+    <span class="brand-descriptor" aria-hidden="true">IRIGAȚII</span>
+  </span>
+</a>

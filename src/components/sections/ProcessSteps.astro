@@ -1,0 +1,39 @@
+---
+import SectionHeading from '../site/SectionHeading.astro';
+
+interface Step {
+  title: string;
+  description: string;
+}
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  steps?: readonly Step[];
+}
+const {
+  eyebrow = 'Proces de lucru',
+  title = 'Claritate înainte de fiecare etapă.',
+  intro = 'De la prima discuție la sprijinul de după instalare, fiecare decizie se leagă de condițiile fermei.',
+  steps = [
+    { title: 'Consultanță', description: 'Discutăm despre necesarul de irigare, echipamentele existente și obiectivele fermei.' },
+    { title: 'Analiză și configurare', description: 'Analizăm terenul, cultura, sursa de apă și disponibilitatea energiei pentru configurarea soluției.' },
+    { title: 'Instalare și punere în funcțiune', description: 'Coordonăm montajul și verificăm funcționarea sistemului înainte de predare.' },
+    { title: 'Service și sprijin', description: 'Rămânem disponibili pentru mentenanță, verificări și intervenții asupra echipamentelor de irigații.' },
+  ],
+} = Astro.props;
+---
+<section class="section process" id="proces">
+  <div class="container">
+    <SectionHeading eyebrow={eyebrow} title={title} intro={intro} />
+    <ol class="process__steps">
+      {steps.map((step, index) => (
+        <li data-reveal>
+          <span class="process__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

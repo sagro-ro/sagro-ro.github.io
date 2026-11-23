@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/contact/ContactForm.astro';
+import { ArrowDownRight, Droplets, Mail, MapPin, Phone, Sprout, Zap } from '@lucide/astro';
+import { site } from '../data/site';
+import { enquiryHref, getEnquiryType } from '../lib/enquiry';
+import { normalizeFormEndpoint } from '../lib/contact-validation';
+import '../styles/contact.css';
+
+const endpoint = normalizeFormEndpoint(import.meta.env.PUBLIC_FORM_ENDPOINT);
+const initialType = getEnquiryType(Astro.url.searchParams);
+---
+<BaseLayout
+  title="Contact pentru sisteme de irigații și service | Sagro"
+  description="Contactează Sagro pentru proiectarea unui sistem de irigații sau service și mentenanță pentru echipamentul fermei tale."
+>
+  <section class="contact-intro">
+    <div class="container">
+      <p class="eyebrow">Contact Sagro</p>
+      <h1>Hai să discutăm despre irigații.</h1>
+      <p class="contact-intro__lead">Alege direcția potrivită și oferă-ne câteva detalii despre parcelă, echipament sau problema observată.</p>
+      <div class="contact-intro__routes">
+        <a href={enquiryHref('instalare')}>Proiectează un sistem <ArrowDownRight aria-hidden="true" /></a>
+        <a href={enquiryHref('service')}>Solicită service <ArrowDownRight aria-hidden="true" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-body">
+    <div class="container contact-layout">
+      <ContactForm endpoint={endpoint} initialType={initialType} />
+      <aside class="contact-aside" aria-label="Date de contact și informații utile">
+        <section>
+          <h2>Contact direct</h2>
+          <p class="contact-aside__company">{site.legalName}</p>
+          <p>{site.registration.join(' · ')}</p>
+          <dl>
+            <div><dt><Phone aria-hidden="true" />Telefon</dt><dd><a href={site.phoneHref}>{site.phoneDisplay}</a></dd></div>
+            <div><dt><Mail aria-hidden="true" />E-mail</dt><dd><a href={site.emailHref}>{site.email}</a></dd></div>
+            <div><dt><MapPin aria-hidden="true" />Adresă</dt><dd>{site.address}</dd></div>
+          </dl>
+        </section>
+        <section>
+          <h2>Pregătește discuția</h2>
+          <ul class="contact-aside__info">
+            <li><Sprout aria-hidden="true" /> Suprafața și forma parcelei, cultura și modul de utilizare.</li>
+            <li><Droplets aria-hidden="true" /> Sursa de apă și condițiile terenului.</li>
+            <li><Zap aria-hidden="true" /> Disponibilitatea energiei electrice.</li>
+          </ul>
+          <p>Pentru service sunt utile tipul echipamentului, județul și simptomele apărute. Aceste repere nu adaugă câmpuri obligatorii în formular.</p>
+        </section>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

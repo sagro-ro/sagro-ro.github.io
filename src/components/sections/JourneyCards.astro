@@ -1,0 +1,31 @@
+---
+import { DraftingCompass, Wrench } from '@lucide/astro';
+import ButtonLink from '../site/ButtonLink.astro';
+import SectionHeading from '../site/SectionHeading.astro';
+import { enquiryHref } from '../../lib/enquiry';
+---
+<section class="section section--paper journeys" data-section="journeys">
+  <div class="container">
+    <SectionHeading
+      eyebrow="Două direcții, aceeași grijă"
+      title="Începem de la ce are nevoie ferma ta."
+      intro="Fie că planifici un sistem nou sau echipamentul existent are nevoie de atenție, discuția pornește de la situația reală din teren."
+    />
+    <div class="journey-grid">
+      <article class="journey journey--installation" data-reveal>
+        <DraftingCompass aria-hidden="true" class="journey__icon" />
+        <p class="journey__index">SISTEM NOU / 01</p>
+        <h3>Proiectează un sistem</h3>
+        <p>Analizăm suprafața și forma parcelei, cultura, sursa de apă și accesul la energie pentru a contura configurația potrivită.</p>
+        <ButtonLink href={enquiryHref('instalare')} variant="light">Proiectează un sistem</ButtonLink>
+      </article>
+      <article class="journey journey--service" data-reveal>
+        <Wrench aria-hidden="true" class="journey__icon" />
+        <p class="journey__index">ECHIPAMENT EXISTENT / 02</p>
+        <h3>Solicită service</h3>
+        <p>Spune-ne ce echipament folosești și ce ai observat. Evaluăm intervenția necesară pentru service sau mentenanță.</p>
+        <ButtonLink href={enquiryHref('service')} variant="secondary">Solicită service</ButtonLink>
+      </article>
+    </div>
+  </div>
+</section>

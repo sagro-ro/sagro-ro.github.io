@@ -1,0 +1,31 @@
+---
+import { site } from '../../data/site';
+import ButtonLink from '../site/ButtonLink.astro';
+import { enquiryHref } from '../../lib/enquiry';
+import '../../styles/sections.css';
+interface Props {
+  title?: string;
+  intro?: string;
+  enquiryType?: 'instalare' | 'service';
+}
+const {
+  title = 'Hai să vorbim despre terenul tău.',
+  intro = 'Spune-ne ce vrei să irigi sau ce echipament trebuie verificat. Pornim de la informațiile reale ale proiectului.',
+  enquiryType = 'instalare',
+} = Astro.props;
+---
+<section class="section--compact contact-cta" data-offer-cta={enquiryType}>
+  <div class="container contact-cta__inner" data-reveal>
+    <div>
+      <p class="eyebrow">Contact Sagro</p>
+      <h2>{title}</h2>
+      <p>{intro}</p>
+    </div>
+    <div class="contact-cta__actions">
+      <ButtonLink href={enquiryHref(enquiryType)} variant="light">
+        {enquiryType === 'service' ? 'Solicită service' : 'Cere o evaluare'}
+      </ButtonLink>
+      <ButtonLink href={site.phoneHref} variant="outline-light">{site.phoneDisplay}</ButtonLink>
+    </div>
+  </div>
+</section>

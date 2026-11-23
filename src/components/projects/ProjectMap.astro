@@ -1,0 +1,83 @@
+---
+import romania from '@svg-maps/romania';
+import { MapPin } from '@lucide/astro';
+import { projects } from '../../data/projects';
+import { site } from '../../data/site';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+const projectCountyIds = new Set(projects.map((project) => project.countyId));
+---
+<div class:list={['project-map', { 'project-map--compact': compact }]} data-project-map>
+  <div class="project-map__geography">
+    <div class="project-map__canvas">
+      <svg
+        viewBox={romania.viewBox}
+        role="presentation"
+        aria-hidden="true"
+        focusable="false"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {romania.locations.map((county) => (
+          <path
+            d={county.path}
+            data-county-id={county.id}
+            class:list={[{ 'project-county': projectCountyIds.has(county.id as typeof projects[number]['countyId']) }]}
+          />
+        ))}
+      </svg>
+      <div class="project-map__controls" data-map-controls hidden>
+        {projects.map((project, index) => (
+          <button
+            class="map-marker"
+            type="button"
+            data-project-slug={project.slug}
+            aria-controls={`proiect-${project.slug}`}
+            aria-pressed="false"
+            aria-label={`${String(index + 1).padStart(2, '0')} — ${project.countyLabel}: ${project.name}`}
+            hidden
+          >
+            <MapPin aria-hidden="true" />
+            <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+    <p class="project-map__key"><span aria-hidden="true"></span>Zonă de județ cu proiect documentat</p>
+    <p class="project-map__status" data-map-status aria-live="polite" aria-atomic="true"></p>
+  </div>
+
+  <div class="project-map__content">
+    <div class="project-list-controls" data-project-list-controls hidden aria-label="Selectează un proiect">
+      {projects.map((project) => (
+        <button
+          type="button"
+          aria-controls={`proiect-${project.slug}`}
+          aria-pressed="false"
+          data-project-slug={project.slug}
+        >
+          <span>{project.countyLabel}</span>
+          <span>{project.systemLabel}</span>
+        </button>
+      ))}
+    </div>
+    <div class="project-stories">
+      {projects.map((project) => <ProjectCard project={project} compact={compact} />)}
+    </div>
+  </div>
+</div>
+<div class="project-map__notes">
+  <p>{site.projectDisclaimer}</p>
+  <p>
+    Hartă bazată pe <a href="https://mapsvg.com/maps/romania" target="_blank" rel="noopener noreferrer">MapSVG Romania map</a>,
+    prin pachetul <code>@svg-maps/romania</code> 2.0.0, sub licența
+    <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.
+  </p>
+</div>
+<script>
+  import { initProjectMap } from '../../scripts/project-map';
+  for (const map of document.querySelectorAll<HTMLElement>('[data-project-map]')) initProjectMap(map);
+</script>

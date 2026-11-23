@@ -1,0 +1,35 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/work-sans';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import '../styles/layout.css';
+import SiteHeader from '../components/site/SiteHeader.astro';
+import SiteFooter from '../components/site/SiteFooter.astro';
+import SeoMeta from '../components/site/SeoMeta.astro';
+
+export interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+}
+const { title, description, image, noindex = false } = Astro.props;
+---
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <SeoMeta title={title} description={description} image={image} noindex={noindex} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <a class="skip-link" href="#continut">Sari la conținut</a>
+    <SiteHeader />
+    <main id="continut" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

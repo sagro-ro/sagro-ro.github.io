@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectMap from '../components/projects/ProjectMap.astro';
+import ContactCta from '../components/sections/ContactCta.astro';
+import '../styles/project-map.css';
+---
+<BaseLayout
+  title="Proiecte de irigații documentate în România | Sagro"
+  description="Trei proiecte de irigații prezentate de Sagro în Călărași, Ialomița și Constanța, cu experiențele clienților și locații aproximative la nivel de județ."
+>
+  <section class="projects-intro">
+    <div class="container">
+      <p class="eyebrow">Experiențe din câmp</p>
+      <h1>Proiecte puse în funcțiune.</h1>
+      <p>Descoperă trei experiențe prezentate de Sagro și modul în care terenul, cultura și sursa de apă au intrat în discuția despre irigare.</p>
+    </div>
+  </section>
+  <section class="projects-explorer" aria-label="Harta și poveștile proiectelor">
+    <div class="container">
+      <ProjectMap />
+    </div>
+  </section>
+  <ContactCta
+    enquiryType="instalare"
+    title="Următoarea discuție poate începe cu parcela ta."
+    intro="Spune-ne ce suprafață vrei să irigi, ce cultură ai și de unde vine apa. Construim evaluarea pe informațiile fermei tale."
+  />
+  <script>
+    import { initReveals } from '../scripts/reveal';
+    initReveals();
+  </script>
+</BaseLayout>

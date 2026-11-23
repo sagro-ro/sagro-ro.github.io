@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import ContactCta from '../components/sections/ContactCta.astro';
+import SectionHeading from '../components/site/SectionHeading.astro';
+import { media } from '../data/media';
+import { serviceScopes, serviceSteps } from '../data/services';
+import { ArrowRight } from '@lucide/astro';
+import '../styles/sections.css';
+import '../styles/offerings.css';
+---
+<BaseLayout
+  title="Service și mentenanță pentru echipamente de irigații | Sagro"
+  description="Solicită service și mentenanță pentru echipamente de irigații: evaluare, diagnostic, verificări periodice, intervenții tehnice și pregătirea sezonului."
+>
+  <PageHero
+    eyebrow="Service pentru irigații"
+    title="Service și mentenanță pentru irigații."
+    intro="Evaluăm echipamentul și problema observată pentru a stabili verificările și intervențiile potrivite instalației tale."
+    image={media.irrigationEquipment}
+    type="service"
+    note="Imagine editorială din materialele publicate de Sagro; nu reprezintă o intervenție la un client anume."
+  />
+
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        eyebrow="Sprijin pentru echipamentele din câmp"
+        title="Mentenanța începe cu o evaluare clară."
+        intro="Fiecare solicitare este analizată în contextul tipului de sistem și al modului său de utilizare. Nu presupunem o reparație standard înainte de a cunoaște problema."
+      />
+      <ul class="service-scope">
+        {serviceScopes.map((scope, index) => (
+          <li data-reveal>
+            <p class="service-scope__number">/{String(index + 1).padStart(2, '0')}</p>
+            <h2>{scope.title}</h2>
+            <p>{scope.description}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--dark" aria-labelledby="service-workflow-title">
+    <div class="container">
+      <SectionHeading
+        dark
+        eyebrow="Cum decurge solicitarea"
+        title="De la simptome la intervenția agreată."
+        intro="Păstrăm pașii expliciți și informațiile initiale în centrul evaluării. Natura lucrărilor și disponibilitatea se stabilesc în funcție de solicitare."
+      />
+      <ol class="service-workflow">
+        {serviceSteps.map((step, index) => (
+          <li data-service-step data-reveal>
+            <span class="service-workflow__number" aria-hidden="true">{index + 1}</span>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="offering-crosslink">
+    <div class="container offering-crosslink__inner">
+      <div>
+        <h2>Planifici o instalație nouă?</h2>
+        <p>Descoperă tipurile de sisteme și informațiile utile pentru configurarea soluției.</p>
+      </div>
+      <a class="button button--secondary" href="/sisteme-irigatii/" data-systems-link>
+        Vezi sistemele <ArrowRight aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+  <ContactCta
+    enquiryType="service"
+    title="Spune-ne ce a observat echipa ta."
+    intro="Include tipul echipamentului, județul și simptomele apărute. Numărul de telefon și adresa de e-mail rămân disponibile pentru contact direct."
+  />
+
+  <script>
+    import { initReveals } from '../scripts/reveal';
+    initReveals();
+  </script>
+</BaseLayout>

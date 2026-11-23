@@ -1,0 +1,41 @@
+---
+import { site } from '../../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const { title, description, image, noindex = false } = Astro.props;
+const fullTitle = `${title} | Sagro Irigații`;
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : Astro.url.href;
+const siteUrl = Astro.site ? new URL('/', Astro.site).href : Astro.url.origin + '/';
+const socialImage = image ? new URL(image, Astro.site ?? Astro.url).href : undefined;
+const businessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  legalName: site.legalName,
+  telephone: site.phoneDisplay,
+  email: site.email,
+  address: site.address,
+  url: siteUrl,
+};
+const structuredData = JSON.stringify(businessSchema).replace(/</g, '\\u003c');
+---
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+<link rel="canonical" href={canonical} />
+<meta property="og:locale" content="ro_RO" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Sagro Irigații" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{socialImage && <meta property="og:image" content={socialImage} />}
+<title>{fullTitle}</title>
+<script is:inline type="application/ld+json" set:html={structuredData}></script>

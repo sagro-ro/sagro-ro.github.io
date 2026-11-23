@@ -1,0 +1,47 @@
+---
+import { ArrowDownRight } from '@lucide/astro';
+import { media } from '../../data/media';
+import SourceImage from '../media/SourceImage.astro';
+import ButtonLink from '../site/ButtonLink.astro';
+import { enquiryHref } from '../../lib/enquiry';
+
+interface Props {
+  title?: string;
+  intro?: string;
+}
+const {
+  title = 'Apă acolo unde contează.',
+  intro = 'Proiectăm și instalăm sisteme de irigații pentru fermele din România, cu service și mentenanță pentru echipamentele din câmp.',
+} = Astro.props;
+---
+<section class="hero" data-hero>
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="eyebrow">Sisteme de irigații · Service</p>
+      <h1>{title}</h1>
+      <p class="hero__intro">{intro}</p>
+      <div class="hero__actions">
+        <ButtonLink href={enquiryHref('instalare')}>Proiectează un sistem</ButtonLink>
+        <ButtonLink href={enquiryHref('service')} variant="secondary">Solicită service</ButtonLink>
+      </div>
+    </div>
+    <div class="hero__visual">
+      <div class="hero__photo" data-reveal>
+        <SourceImage
+          record={media.heroField}
+          eager
+          widths={[640, 960, 1536]}
+          sizes="(min-width: 1024px) 52vw, calc(100vw - 40px)"
+        />
+      </div>
+      <div class="hero__caption">
+        <span class="hero__caption-index">01</span>
+        <span>De la teren la o soluție de irigare potrivită.</span>
+        <ArrowDownRight aria-hidden="true" />
+      </div>
+    </div>
+  </div>
+  <div class="container hero__disciplines" aria-label="Servicii Sagro">
+    <span>Proiectare</span><span>Instalare</span><span>Service și mentenanță</span>
+  </div>
+</section>
