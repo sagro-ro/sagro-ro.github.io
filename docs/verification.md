@@ -15,7 +15,7 @@ All commands below were run after the latest implementation fixes and exited wit
 | `npm run typecheck` | **70 files checked; 0 errors, 0 warnings, 0 hints**. |
 | `npm test` | **10 test files, 71/71 tests passed**. Vitest is scoped to unit/data tests. |
 | `npm run build` | **8 Astro pages** generated (seven indexed routes plus `404.html`), with `sitemap.xml`, `robots.txt`, three static legacy fallback documents, `CNAME`, `.nojekyll`, `_redirects`, optimized local images, and static assets. The default build leaves form delivery unconfigured. |
-| `npx playwright test --reporter=dot` | **65/65 tests passed** in Chromium, including centered editorial content across all primary/legal/recovery routes at desktop and mobile widths, small-screen pointer callouts, 44px standalone shell/menu targets, form transport, keyboard behavior, no-JavaScript content, responsive layouts, metadata, recovery behavior, and both JavaScript/no-JavaScript legacy fallbacks against static preview output. |
+| `npx playwright test --reporter=dot` | **68/68 tests passed** in Chromium, including centered editorial content across all primary/legal/recovery routes at desktop and mobile widths, measured footer and service-workflow introduction alignment, the Sagro favicon, small-screen pointer callouts, 44px standalone shell/menu targets, form transport, keyboard behavior, no-JavaScript content, responsive layouts, metadata, recovery behavior, and both JavaScript/no-JavaScript legacy fallbacks against static preview output. |
 | `npm run test:a11y` | **15/15 axe cases passed**: seven indexed routes at desktop and mobile sizes, plus open mobile navigation. No serious or critical violations were reported within the tested application landmarks. |
 
 The browser suite uses three local Astro servers. The normal server on `127.0.0.1:4321` has no form endpoint. The second, on `127.0.0.1:4322`, exposes the reserved URL `https://forms.example.test/solicitari`; Playwright intercepts that request. It is not a real enquiry provider and no customer data is transmitted externally. The third, on `127.0.0.1:4324`, builds and previews the generated static artifact for legacy fallback tests. That local preview does not prove GitHub's public hosting, DNS, TLS or HTTP redirect behavior.
@@ -81,6 +81,16 @@ The following captures were generated from the running app after this change, wi
 - `centered-mobile-home.png` and `centered-mobile-service.png`.
 
 These show centered content within the existing columns and cards, readable footer and contact details, left-aligned form controls and project-list controls, and no new wrapping or overflow problem. The full responsive suite, including 200% text sizing and 320–1440px overflow checks, passed after the change.
+
+### Requested alignment and favicon refinements
+
+On 2026-11-23, the generic SVG droplet was replaced by a transparent **192×192 PNG** cropped from the supplied Sagro logo's gear/drop symbol. The favicon link and test-server readiness paths now use `/favicon.png`; the source wordmark remains unchanged.
+
+Two new browser checks were RED before the correction: the favicon link still pointed to `/favicon.svg`, and the footer logo sat **135.3px left** of its desktop column center. Stretched grid containers and left-justified brand contents—not the existing `text-align` declaration—caused that visual offset. The correction centers the footer-only brand and contact groups and the contact-link contents, while preserving navigation alignment and all minimum target sizes. Measured checks pass at **1440, 768, and 375px**.
+
+The focused run passed **3/3**, and the final complete **70-file typecheck, 71/71 unit/data tests, 68/68 browser tests, 15/15 axe cases, and successful 8-page build** are recorded above. The generated `refined-footer-desktop.png` and `refined-footer-mobile.png` captures were opened and visually inspected. Fixed-page header/skip-link overlays are hidden only for the isolated footer screenshots; normal page behavior is unchanged. The new favicon PNG was also inspected and contains the actual Sagro logo symbol with its transparent background retained.
+
+A later scoped refinement centers the **“Cum decurge solicitarea”** introduction block itself, rather than only the text inside its left-anchored, width-capped container. Its measured desktop center was initially **176px left** of the section center; the new workflow-specific container class and `margin-inline: auto` fix that without changing the process steps. The measured check passes at **1440, 768, and 375px**. `centered-service-workflow-desktop.png` and `centered-service-workflow-mobile.png` were captured from the built site with fixed-page overlays hidden only for the isolated screenshots, then visually inspected. The final complete browser gate after this addition was **68/68**.
 
 ### GitHub Pages preparation and legacy-link verification
 

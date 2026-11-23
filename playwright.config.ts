@@ -17,20 +17,20 @@ export default defineConfig({
     {
       // Astro 7 auto-backgrounds in agent shells; --ignore-lock keeps this managed test server foreground.
       command: 'npm run dev -- --host 127.0.0.1 --port 4321 --ignore-lock',
-      url: 'http://127.0.0.1:4321/favicon.svg',
+      url: 'http://127.0.0.1:4321/favicon.png',
       reuseExistingServer: !process.env.CI,
       timeout: 60_000,
     },
     {
       // An intercepted .test endpoint lets browser tests exercise transport without sending customer data.
       command: 'PUBLIC_FORM_ENDPOINT=https://forms.example.test/solicitari npm run dev -- --host 127.0.0.1 --port 4322 --ignore-lock',
-      url: 'http://127.0.0.1:4322/favicon.svg',
+      url: 'http://127.0.0.1:4322/favicon.png',
       reuseExistingServer: !process.env.CI,
       timeout: 60_000,
     },
     {
       command: 'npm run build && npm run preview -- --host 127.0.0.1 --port 4324 --ignore-lock',
-      url: 'http://127.0.0.1:4324/favicon.svg',
+      url: 'http://127.0.0.1:4324/favicon.png',
       reuseExistingServer: !process.env.CI,
       timeout: 60_000,
     },
