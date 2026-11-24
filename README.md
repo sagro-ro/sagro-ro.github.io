@@ -1,6 +1,6 @@
 # Sagro Irigații
 
-Standalone Romanian-language irrigation website for Sagro, built as static Astro output. It presents two equally important journeys—new irrigation installations and irrigation service/maintenance—plus the three documented projects published on Sagro's original irrigation page.
+Standalone Romanian-language irrigation website for Sagro, built as static Astro output. It presents two equally important journeys—new irrigation installations and irrigation service/maintenance—plus six grouped county markers covering 13 supplied localities. Public project copy uses customer-facing implementation wording; internal records retain the supplied-list provenance and its lack of independent verification.
 
 ## Local setup
 
@@ -47,16 +47,17 @@ Before activating a provider, review and update the privacy page with its actual
 
 Do not import old machinery warranties, response-time promises or unrelated product claims into irrigation content.
 
-### Add a documented project
+### Update supplied implementation localities
 
-1. Verify the source and county before changing `src/data/projects.ts`.
-2. Add a unique slug, name, client label, county ID, system label, factual summary and source-derived quotation. Preserve the exact source URL.
-3. Use an ID already present in the bundled `@svg-maps/romania` geometry. Runtime checks cover the existing `ro-cl`, `ro-il` and `ro-ct` IDs; add explicit checks when supporting a new county.
-4. Keep locations approximate at county level. Do not add customer addresses, geolocation or inferred coordinates.
-5. Do not attach generic editorial imagery to a customer project as installation evidence.
-6. Add/extend tests and run the complete verification suite.
+1. Confirm each requested county and locality spelling before changing `src/data/projects.ts`. Preserve whether the information was supplied or independently verified; never upgrade its provenance without evidence.
+2. Each ordered county record contains only `slug`, `countyId`, `countyLabel`, `localities`, `sourceUrl`. Derive `sourceUrl` through `getProjectSourceUrl(slug)` and keep the six county/source anchor pairs synchronized.
+3. Use an ID already present in the bundled `@svg-maps/romania` geometry. Runtime checks cover `ro-mh`, `ro-dj`, `ro-ot`, `ro-tr`, `ro-cl`, and `ro-ct`; add explicit checks when supporting a new county.
+4. Markers identify county geometry, not installation premises. Do not add customer addresses, geocoding, inferred coordinates, or exact project coordinates.
+5. Do not add customer names, equipment attribution, quotations, outcomes, project years, seasonal wording, or unsupported guarantees to the supplied-locality records. Do not attach generic editorial imagery to a locality as installation evidence.
+6. Update `src/data/project-evidence.ts` when the approved public note, actual review date, or provenance changes, and keep `docs/discovery-maintenance.md` aligned. The review date is internal provenance, not required public-facing map copy. The supplied list is not independently verified.
+7. Add/extend exact data, fragment, browser, built-output, and scoped accessibility checks, then run the complete verification suite.
 
-New project records automatically create map/list controls and project cards. The map enhancement leaves every story readable if geometry cannot be resolved or JavaScript is unavailable.
+County records automatically create map/list controls and county cards. The map enhancement leaves every locality card readable if geometry cannot be resolved or JavaScript is unavailable.
 
 ### Images and attribution
 

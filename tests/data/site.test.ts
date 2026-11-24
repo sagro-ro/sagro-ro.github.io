@@ -10,7 +10,6 @@ describe('confirmed Sagro identity', () => {
     expect(site.email).toBe('contact@sagro.ro');
     expect(site.emailHref).toBe('mailto:contact@sagro.ro');
     expect(site.address).toBe('Str. Primăverii 161, Poiana Mare, Dolj');
-    expect(site.projectDisclaimer).toMatch(/aproximativ/i);
-    expect(site.projectDisclaimer).toMatch(/județ/i);
+    expect(site.projectDisclaimer).toBe('Localități cu implementări Sagro. Marcajele grupează implementările pe județe.');
   });
 });

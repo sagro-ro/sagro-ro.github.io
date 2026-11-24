@@ -1,6 +1,6 @@
 ---
 import type { Project } from '../../data/projects';
-import { projectHistoricalNote } from '../../data/project-evidence';
+import { projectEvidenceNote } from '../../data/project-evidence';
 
 interface Props {
   project: Project;
@@ -17,18 +17,16 @@ const Heading = compact ? 'h3' : 'h2';
   data-reveal
 >
   <header class="project-story__header">
-    <p class="project-story__location">{project.countyLabel} / {project.clientLabel}</p>
-    <Heading>{project.name}</Heading>
-    <p class="project-story__history" data-project-history>{projectHistoricalNote}</p>
-    <p class="project-story__system">{project.systemLabel}</p>
+    <p class="project-story__location">Județul {project.countyLabel}</p>
+    <Heading>Localități în județul {project.countyLabel}</Heading>
   </header>
-  <p class="project-story__summary">{project.summary}</p>
-  <blockquote><p>„{project.quote}”</p></blockquote>
+  <ul data-project-localities>
+    {project.localities.map((locality) => <li>{locality}</li>)}
+  </ul>
+  <p class="project-story__context" data-project-evidence-context>{projectEvidenceNote}</p>
   <footer>
-    {!compact && (
-      <a class="text-link project-source" href={project.sourceUrl}>
-        Vezi sursa și contextul publicării
-      </a>
-    )}
+    <a class="text-link project-source" href={project.sourceUrl}>
+      Vezi contextul localităților
+    </a>
   </footer>
 </article>

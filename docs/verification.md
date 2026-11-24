@@ -2,12 +2,83 @@
 
 **Initial verification:** 2026-11-12  
 **Previous verification including GitHub Pages preparation:** 2026-11-23
-**Latest discovery-readiness verification:** 2026-11-24
-**Scope:** the complete standalone Astro implementation in the isolated discovery-readiness worktree, including source, unit/data checks, real Chromium interaction, responsive layouts, production output, content provenance, and visual evidence.
+**Previous discovery-readiness verification:** 2026-11-24
+**Latest county-grouped locality-map verification:** 2026-11-24
+**Scope:** the complete standalone Astro implementation in the isolated discovery-readiness worktree, including the supplied six-county/13-locality map, source, unit/data checks, real Chromium interaction, responsive layouts, production output, current content provenance, and visual evidence.
 
-This is a local implementation and verification record. It is not evidence of production deployment, live enquiry delivery, host-level redirects, or accessibility certification. The dated section below is the current result; later sections retain earlier observations and historical counts.
+This is a local implementation and verification record. It is not evidence of production deployment, live enquiry delivery, host-level redirects, or accessibility certification. The first dated section below is the current result. Every later section retains earlier observations and historical counts; in particular, the former three-project stories, their source statements, and their test totals are historical and are not evidence for the supplied locality list.
 
-## Discovery-readiness verification — 2026-11-24
+## County-grouped locality map verification — 2026-11-24
+
+### Production-facing locality copy refinement
+
+The public editorial/update note was replaced with the user-approved production sentence **“Localități cu implementări Sagro. Marcajele grupează implementările pe județe.”** Homepage and project introductions, the source route, terms, public metadata and accessible labels, map legend/`llms.txt`, and associated assertions now use customer-facing wording. Public copy no longer repeats the website-update, editorial-review, non-independent-verification, or supplied-only-place boilerplate. Internal maintenance records retain the supplied-list provenance, review date, and information limits; the general terms-page revision date remains.
+
+The focused RED evidence recorded **3 unit/data failures and 6 browser failures** on the old text. Both the expanded generated-output audit and visual audit also failed against the stale build. After the copy correction, the full unit suite passed **102/102**, followed by **6/6 focused browser checks**. The fresh ordered gate at **13:00 EET** then passed **77 typechecked files with 0 diagnostics**, **13 files and 102/102 unit/data/maintenance tests**, **nine Astro pages**, **70/70 browser tests**, and **17/17 scoped axe checks**. The initial direct invocation of the verification shell returned permission denied before running checks; invoking the same script through `bash` produced the recorded gate.
+
+A later documentation-only run caught one maintenance failure: the README's internal provenance sentence no longer contained the required exact phrase `13 supplied localities`. Restoring that phrase in the internal README—not changing public copy or weakening the assertion—produced a fresh final **13 files and 102/102 tests passed** result at **13:08 EET**. The final independent public-copy review returned **no findings** and independently checked the production wording, six-county/13-locality coverage, source/backlink pairs, RED/GREEN records, complete gate, built output, and visual-audit evidence.
+
+The rebuilt audit reports **65 generated files, 16 HTML documents, 324 same-origin references across 39 targets, 0 unresolved links/fragments**, six source/backlink pairs, and 52 exact-locality checks. The approved note is required on the homepage, projects route, source route, terms, and `llms.txt`; every generated HTML document and `llms.txt` is scanned for both the removed project stories and the narrow editorial-copy phrases, with **0 forbidden matches**. The production visual audit repeated six desktop project/source journeys, six mobile source journeys, six no-JavaScript checks, and 12 small-screen pointer checks with **0 overflow failures and 0 uncaught page errors**. All four refreshed desktop/mobile screenshots were opened and visually inspected with the approved note visible. No new commit, push, merge, deployment, or external-form action was performed.
+
+The subsections below retain the immediately preceding county-map implementation and review evidence; statements there about the former public editorial/provenance wording describe that earlier state, not the refined production copy above.
+
+### Original automated gate before production-facing copy refinement
+
+The following commands ran **in this order** through `verify-gate.sh` after the final accessible-name correction, and each exited with code 0:
+
+| Command | Observed result |
+| --- | --- |
+| `npm run typecheck` | **77 files checked; 0 errors, 0 warnings, 0 hints**. |
+| `npm test` | **13 test files, 102/102 unit/data/maintenance tests passed**. The exact ordered dataset and flattened 13 localities, current evidence note/date, six valid county fragments, safe malformed/unknown hash handling, curated `llms.txt`, and current maintenance guidance are covered. |
+| `npm run build` | **9 Astro pages built**: eight indexed HTML routes plus `404.html`; `llms.txt`, `sitemap.xml`, and `robots.txt` were also generated. |
+| `npm run test:browser` | **70/70 browser tests passed**, excluding the separately run `@a11y` cases. The project file accounts for 19 tests: six synchronized marker/list controls and cards, five non-default direct fragments, Enter/Space operation, current source/provenance journeys, unknown/malformed/empty fragments, back navigation and cleanup, no-JavaScript content, 44px targets, and independent actual pointer activation at both 320px and 375px. |
+| `npm run test:a11y` | **17/17 scoped axe cases passed**: eight indexed routes at desktop and mobile sizes, plus open mobile navigation. No serious or critical violations were reported in the tested landmarks. |
+
+An earlier post-content axe run reproduced **4 failures / 13 passes**: the county-list `aria-label` inserted a colon that was absent between the visible county and locality spans, causing `label-content-name-mismatch`. The visible county label now includes the colon and supplies the native accessible name without a redundant override. The 19-test interaction file, complete browser suite, and all 17 scoped axe cases passed afterward, followed by the fresh ordered gate above.
+
+The contact transport tests continue to intercept the reserved `https://forms.example.test/solicitari` endpoint locally. It is not a real provider, no customer data was sent to an external form service, and the default production form remains disabled.
+
+### Independent whole-tree review and correction evidence
+
+The fresh independent reviewer inspected the complete uncommitted working tree, untracked approved plan/spec, generated output, audit utilities, saved gate logs, and four screenshots. It reported **no Critical findings** and two **Important omissions**, both reproduced RED and corrected in one fix pass:
+
+- `/termeni-conditii/` still described three published historical examples. The existing terms browser test was extended first and failed on the missing current supplied-list limitation. The generated-output audit was also extended to every HTML document and independently failed on `/Cele trei exemple publicate/`. The page now describes the supplied locality list, non-independent verification, county markers and exact-premises/coordinate limits, with its revision date updated to **24 noiembrie 2026**. The focused browser check passed **1/1**, and the rebuilt full-document scan passes.
+- `README.md` still taught maintainers to add rich customer/system/quotation stories, while `docs/content-audit.md` did not mark the former project-source follow-up superseded. A new maintenance regression file failed **2/2** before the correction. The README now documents only the five-field county model/current provenance, and the dated audit explicitly supersedes its former follow-up without deleting historical observations. The focused unit check passed **2/2**.
+
+The complete ordered gate above was rerun after those fixes. Two test-harness corrections were separated from product behavior: an extra brace in the expanded audit was fixed before obtaining its genuine stale-terms RED, and the documentation test was narrowed from rejecting every use of “quotation” to rejecting the exact obsolete schema instruction, since the new README correctly forbids quotations.
+
+The reviewer identified one **Minor deferred** wording consistency item: shared footer/recovery labels still use the general phrase “Proiecte documentate.” It does not name the removed stories or assert independent verification, and the linked project content carries the current limitations; it remains recorded rather than entering the Important-only fix pass. Optional unused-CSS cleanup and additional lifecycle coverage recommendations were not treated as release defects.
+
+### Fresh built-output audit
+
+`node .superpowers/sdd/2026-11-24-project-county-map/audit-dist.mjs dist` audited the artifact produced by the gate and reported:
+
+- **65 generated files**, including **16 HTML documents**: nine Astro pages and seven legacy fallback documents.
+- **324** same-origin `href` occurrences covering **39 unique targets**; **0 unresolved link or fragment targets**.
+- **8 sitemap entries**, all resolving to generated indexed HTML in the preserved route order. **7 reviewed `_redirects` rules** and **7 corresponding static fallback documents** retain valid local destinations; `/pages/service/` deliberately has no equivalent mapping or fallback.
+- **6/6** county source anchors and project backlinks resolve. All **13 exact localities** occur on `/`, `/proiecte/`, `/surse-proiecte/`, and `/llms.txt` (**52 required locality checks**). All **16 generated HTML documents**, plus `llms.txt`, contain **0 matches** for the removed named customers, old three-example claims, story slugs, Ialomița project, quotations, two-season wording, historical context, or project-specific system claims. General equipment content outside those project claims was not treated as forbidden.
+- `llms.txt` retains **8/8 canonical HTTPS links**, the **24 noiembrie 2026** editorial review, and explicit non-independent-verification/exact-premises limitations. **0** produced files contain the intercepted test-form endpoint.
+- The production contact form has an empty endpoint, no `action`, a disabled fieldset and submit button, and its visible unconfigured notice.
+
+The seven static fallbacks remain **HTTP 200** browser-navigation documents in the local static preview, not host/CDN 301 or 308 responses. GitHub Pages does not execute `_redirects`.
+
+### Actual production-preview journeys and visual inspection
+
+The current `dist/` served by the existing `127.0.0.1:4324` production preview was exercised in Chromium by `visual-audit.mjs`. It completed **6 desktop county-fragment journeys**, clicked **6 project-source links**, visited **6 mobile source anchors with local current-list context**, checked **6 visible backlink focus states**, completed **6 back navigations**, and confirmed **6 complete county cards/source links without JavaScript**. Every marker was measured at least 44×44px, trial-clicked, and actually clicked at both 320px and 375px (**12 small-screen pointer checks**). The run recorded **0 horizontal-overflow failures** and **0 uncaught page errors**.
+
+These fresh captures were opened and visually inspected:
+
+- [`project-dolj-desktop.png`](verification/screenshots/project-dolj-desktop.png) — six geometry-derived county markers, selected Dolj marker/card, all five localities, current provenance, attribution, and no clipped selected content.
+- [`project-olt-mobile.png`](verification/screenshots/project-olt-mobile.png) and [`project-teleorman-mobile.png`](verification/screenshots/project-teleorman-mobile.png) — selected county headings, complete locality lists, full local context, and source links below the mobile sticky header without horizontal clipping.
+- [`source-dolj-mobile.png`](verification/screenshots/source-dolj-mobile.png) — the settled Dolj source section with the complete current-list note, all five localities, and its map backlink visible. The first capture caught a smooth-scroll transition, so the audit now waits for settled anchor alignment before capture and the affected image was regenerated and reinspected.
+
+Chromium and emulated viewports were used. The scoped axe checks are not WCAG certification; Safari, Firefox, physical devices, and assistive-technology sessions were not tested.
+
+### Current limits and integration boundary
+
+These checks do **not** independently verify the supplied implementation locations. They do not establish public host/CDN redirect headers, DNS, TLS, HTTPS enforcement or `www` behavior; Search Console ownership, inspection, sitemap processing or coverage; external Google rich-result validation or eligibility; actual AI crawler visits, indexing, citations, rankings or recommendations; or real enquiry delivery. No geocoding, exact installation coordinates, third-party map service, deployment, infrastructure change, or external form-provider setup was performed. The county-map implementation remains uncommitted in the isolated worktree; the earlier discovery-readiness commit is its comparison base. No new commit, push, merge, PR, or deployment was performed for this map work.
+
+## Historical discovery-readiness verification — 2026-11-24
 
 ### Fresh automated gate
 

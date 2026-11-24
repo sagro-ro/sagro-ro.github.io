@@ -1,54 +1,56 @@
 import { getProjectSourceUrl } from './project-evidence';
 
-export type CountyId = 'ro-cl' | 'ro-il' | 'ro-ct';
+export type CountyId = 'ro-mh' | 'ro-dj' | 'ro-ot' | 'ro-tr' | 'ro-cl' | 'ro-ct';
 
 export interface Project {
   slug: string;
-  name: string;
-  clientLabel: string;
   countyId: CountyId;
   countyLabel: string;
-  systemLabel: string;
-  summary: string;
-  quote: string;
+  localities: readonly string[];
   sourceUrl: string;
 }
 
 export const projects = [
   {
-    slug: 'calarasi-ferma-vegetala',
-    name: 'Irigare uniformă pentru cultura de porumb',
-    clientLabel: 'Fermă vegetală',
+    slug: 'mehedinti',
+    countyId: 'ro-mh',
+    countyLabel: 'Mehedinți',
+    localities: ['Vânători'],
+    sourceUrl: getProjectSourceUrl('mehedinti'),
+  },
+  {
+    slug: 'dolj',
+    countyId: 'ro-dj',
+    countyLabel: 'Dolj',
+    localities: ['Băilești', 'Rojiște', 'Listeava', 'Ostroveni', 'Valea Stanciului'],
+    sourceUrl: getProjectSourceUrl('dolj'),
+  },
+  {
+    slug: 'olt',
+    countyId: 'ro-ot',
+    countyLabel: 'Olt',
+    localities: ['Corabia', 'Vișina'],
+    sourceUrl: getProjectSourceUrl('olt'),
+  },
+  {
+    slug: 'teleorman',
+    countyId: 'ro-tr',
+    countyLabel: 'Teleorman',
+    localities: ['Turnu Măgurele', 'Traian'],
+    sourceUrl: getProjectSourceUrl('teleorman'),
+  },
+  {
+    slug: 'calarasi',
     countyId: 'ro-cl',
-    countyLabel: 'Județul Călărași',
-    systemLabel: 'Pivot Zimmatic',
-    summary:
-      'Un pivot Zimmatic ales prin Sagro pentru irigarea unei suprafețe mari de porumb, cu accent pe distribuția uniformă a apei.',
-    quote: 'Am ales un pivot Zimmatic prin Sagro pentru o suprafață mare de porumb.',
-    sourceUrl: getProjectSourceUrl('calarasi-ferma-vegetala'),
+    countyLabel: 'Călărași',
+    localities: ['Borcea', 'Mănăstirea'],
+    sourceUrl: getProjectSourceUrl('calarasi'),
   },
   {
-    slug: 'ialomita-ferma-baciu',
-    name: 'Un sistem folosit de două sezoane',
-    clientLabel: 'Ferma Baciu',
-    countyId: 'ro-il',
-    countyLabel: 'Județul Ialomița',
-    systemLabel: 'Sistem de irigații Zimmatic',
-    summary:
-      'Ferma Baciu folosește sistemul Zimmatic de două sezoane, după sprijinul primit de la Sagro pentru configurare și instalare.',
-    quote: 'Folosim sistemul de irigații Zimmatic de două sezoane și suntem foarte mulțumiți.',
-    sourceUrl: getProjectSourceUrl('ialomita-ferma-baciu'),
-  },
-  {
-    slug: 'constanta-patino-robot',
-    name: 'De la analiza terenului la punerea în funcțiune',
-    clientLabel: 'Patino Robot',
+    slug: 'constanta',
     countyId: 'ro-ct',
-    countyLabel: 'Județul Constanța',
-    systemLabel: 'Soluție Zimmatic',
-    summary:
-      'Pentru soluția Zimmatic propusă de Sagro, echipa a analizat terenul, cultura și sursa de apă, până la punerea în funcțiune.',
-    quote: 'Am apreciat foarte mult modul de lucru al echipei Sagro.',
-    sourceUrl: getProjectSourceUrl('constanta-patino-robot'),
+    countyLabel: 'Constanța',
+    localities: ['Horia'],
+    sourceUrl: getProjectSourceUrl('constanta'),
   },
 ] as const satisfies readonly Project[];

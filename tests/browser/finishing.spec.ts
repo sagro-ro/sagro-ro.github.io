@@ -36,7 +36,7 @@ test('four routes have exact unique titles without a duplicate Sagro suffix', as
   const expectedTitles = {
     '/sisteme-irigatii/': 'Sisteme de irigații proiectate pentru terenul fermei | Sagro Irigații',
     '/service-mentenanta/': 'Service și mentenanță pentru echipamente de irigații | Sagro Irigații',
-    '/proiecte/': 'Proiecte de irigații documentate în România | Sagro Irigații',
+    '/proiecte/': 'Localități cu implementări de irigații în România | Sagro Irigații',
     '/contact/': 'Contact pentru sisteme de irigații și service | Sagro Irigații',
   } as const;
   const titles: string[] = [];
@@ -154,6 +154,10 @@ test('terms stay informational rather than promising service or sales terms', as
   await expect(content).toContainText(/informații generale/i);
   await expect(content).toContainText(/ofertă|configurație/i);
   await expect(content).not.toContainText(/6–12 luni garanție|livrare gratuită|returnare în \d+ zile/i);
+  await expect(content).toContainText('Localități cu implementări Sagro. Marcajele grupează implementările pe județe.');
+  await expect(content).not.toContainText(/furnizate pentru această actualizare|revizuit\w* editorial|nu este o verificare independentă|singurele locuri furnizate/i);
+  await expect(content).toContainText('24 noiembrie 2026');
+  await expect(content).not.toContainText(/Cele trei exemple publicate|proiectele documentate de/i);
 });
 
 test('unknown routes return a noindex Romanian recovery page with useful navigation', async ({ page }) => {

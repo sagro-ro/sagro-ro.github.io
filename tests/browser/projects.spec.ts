@@ -1,60 +1,67 @@
 import { expect, test } from '@playwright/test';
-import { projectEvidence } from '../../src/data/project-evidence';
 import { projects } from '../../src/data/projects';
 
-const historicalNote = 'Relatăre istorică publicată de Sagro, revizuită la 12 noiembrie 2026. Formulările temporale redau materialul istoric, nu o actualizare automată.';
+const productionNote = 'Localități cu implementări Sagro. Marcajele grupează implementările pe județe.';
+const removedStoryContent = /Ferma Baciu|Patino Robot|calarasi-ferma-vegetala|ialomita-ferma-baciu|constanta-patino-robot|două sezoane|Ialomița|Irigare uniformă pentru cultura de porumb|Pivot Zimmatic|Sistem de irigații Zimmatic|Soluție Zimmatic|Am apreciat foarte mult modul de lucru al echipei Sagro/i;
+const removedEditorialContent = /Localități furnizate|Repere furnizate|furnizate pentru această actualizare|revizuit\w* editorial|revizuirea editorială|nu este o verificare independentă|singurele locuri furnizate/i;
 
-test('project route presents documented stories, approximate locations, and map attribution', async ({ page }) => {
+test('project route presents supplied county localities and map attribution', async ({ page }) => {
   const response = await page.goto('/proiecte/');
   expect(response?.status()).toBe(200);
   await expect(page.locator('main h1')).toHaveCount(1);
   const map = page.locator('[data-project-map]');
   await expect(map).toHaveAttribute('data-map-ready', 'true');
-  await expect(map.locator('[data-project-story]')).toHaveCount(3);
-  await expect(page.getByText(/Locațiile de pe hartă sunt aproximative, la nivel de județ/)).toBeVisible();
+  await expect(map.locator('[data-project-story]')).toHaveCount(6);
+  await expect(map.locator('[data-map-controls] button')).toHaveCount(6);
+  await expect(map.locator('[data-project-list-controls] button')).toHaveCount(6);
+  await expect(map.locator('[data-project-list-controls]')).toHaveAttribute('aria-label', 'Selectează un județ pentru a vedea localitățile');
+  await expect(map.locator('.project-map__key')).toHaveText('Județ cu implementări Sagro');
+  await expect(page.locator('.project-map__notes').getByText(productionNote, { exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: /MapSVG.*Romania/i })).toHaveAttribute('href', 'https://mapsvg.com/maps/romania');
   await expect(page.getByRole('link', { name: /CC BY 4\.0/ })).toHaveAttribute('href', 'https://creativecommons.org/licenses/by/4.0/');
-  for (const id of ['ro-cl', 'ro-il', 'ro-ct']) await expect(map.locator(`[data-county-id="${id}"]`)).toHaveCount(1);
+  for (const id of ['ro-mh', 'ro-dj', 'ro-ot', 'ro-tr', 'ro-cl', 'ro-ct']) {
+    await expect(map.locator(`[data-county-id="${id}"]`)).toHaveCount(1);
+  }
   await expect(map.locator('.project-map__canvas > svg')).toHaveAttribute('aria-hidden', 'true');
-  await expect(page.locator('html')).not.toContainText(/coordonate GPS|latitude|longitude/i);
-  for (const project of projects) {
-    await expect(page.locator(`#proiect-${project.slug}`)).toContainText(project.quote);
-    await expect(page.locator(`#proiect-${project.slug} .project-source`)).toHaveAttribute('href', project.sourceUrl);
-    await expect(page.locator(`#proiect-${project.slug} .project-source`)).not.toHaveAttribute('target', '_blank');
+  await expect(page.locator('html')).not.toContainText(/latitude|longitude/i);
+  for (const [index, project] of projects.entries()) {
+    const story = page.locator(`#proiect-${project.slug}`);
+    await expect(story.locator('.project-story__location')).toHaveText(`Județul ${project.countyLabel}`);
+    await expect(story.locator('[data-project-localities] li')).toHaveText(project.localities);
+    await expect(story.locator('.project-source')).toHaveAttribute('href', project.sourceUrl);
+    await expect(story.locator('.project-source')).not.toHaveAttribute('target', '_blank');
+    await expect(map.locator(`[data-map-controls] [data-project-slug="${project.slug}"] > span`)).toHaveText(String(index + 1).padStart(2, '0'));
+  }
+  for (const route of ['/', '/proiecte/', '/surse-proiecte/']) {
+    await page.goto(route);
+    await expect(page.locator('main')).not.toContainText(removedStoryContent);
+    await expect(page.locator('main')).not.toContainText(removedEditorialContent);
   }
 });
 
-test('project provenance presents dated owner-published evidence and links back to each story', async ({ page }) => {
+test('project locality page presents production context and links back to each county', async ({ page }) => {
   const response = await page.goto('/surse-proiecte/');
   expect(response?.status()).toBe(200);
   const content = page.locator('main');
-  await expect(content).toContainText(projectEvidence.reviewedAtLabel);
-  await expect(content).toContainText(/publicate? de Sagro/);
-  await expect(content).toContainText('nu este o verificare independentă');
-  await expect(content).toContainText(/două sezoane.*material(?:ul|ului) istoric|material(?:ul|ului) istoric.*două sezoane/is);
-  await expect(content).not.toContainText(/Poiana Mare|Predești|Craiova|coordonate GPS|latitude|longitude|hectare instalate|\d+% economii/i);
-
-  const historicalLink = content.locator('section').first().getByRole('link', { name: 'fosta pagină Sagro despre irigații', exact: true });
-  await expect(historicalLink).toHaveAttribute('href', projectEvidence.historicalUrl);
-  await expect(content.locator('[data-project-evidence]')).toHaveCount(3);
+  await expect(content).toContainText(productionNote);
+  await expect(content).not.toContainText(/furnizate pentru această actualizare|revizuit\w* editorial|nu este o verificare independentă|singurele locuri furnizate/i);
+  await expect(content).not.toContainText(/Poiana Mare|Predești|Craiova|latitude|longitude|hectare instalate|\d+% economii|două sezoane|material istoric/i);
+  await expect(content.locator('[data-project-evidence]')).toHaveCount(6);
 
   for (const project of projects) {
     const evidence = content.locator(`#sursa-${project.slug}`);
     await expect(evidence).toHaveAttribute('data-project-evidence', '');
-    await expect(evidence).toContainText(project.countyLabel);
-    await expect(evidence).toContainText(project.clientLabel);
-    await expect(evidence).toContainText(project.systemLabel);
-    await expect(evidence).toContainText(project.name);
-    await expect(evidence).toContainText(project.summary);
-    await expect(evidence).toContainText(project.quote);
-    const backlink = evidence.getByRole('link', { name: 'Vezi proiectul în hartă', exact: true });
+    await expect(evidence).toContainText(`Județul ${project.countyLabel}`);
+    await expect(evidence.locator('[data-project-localities] li')).toHaveText(project.localities);
+    await expect(evidence.locator('[data-project-evidence-context]')).toHaveText(productionNote);
+    const backlink = evidence.getByRole('link', { name: 'Vezi județul în hartă', exact: true });
     await expect(backlink).toHaveAttribute('href', `/proiecte/#proiect-${project.slug}`);
     const target = await page.request.get('/proiecte/');
     expect(target.status()).toBe(200);
   }
 });
 
-test('project source links keep provenance and historical limits in view', async ({ page }) => {
+test('project source links keep production locality context in view', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   for (const project of projects) {
     await page.goto(`/proiecte/#proiect-${project.slug}`);
@@ -63,42 +70,45 @@ test('project source links keep provenance and historical limits in view', async
     await expect(page).toHaveURL(`/surse-proiecte/#sursa-${project.slug}`);
     const context = page.locator(`#sursa-${project.slug} [data-project-evidence-context]`);
     await expect(context).toBeInViewport();
-    await expect(context).toContainText(historicalNote);
-    await expect(context).toContainText('nu este o verificare independentă');
-    await expect(context).toContainText('la nivel de județ');
-    await expect(context.getByRole('link', { name: 'fosta pagină Sagro despre irigații', exact: true })).toHaveAttribute('href', projectEvidence.historicalUrl);
+    await expect(context).toHaveText(productionNote);
   }
 });
 
-test('project cards qualify historical duration on homepage and project route', async ({ page }) => {
+test('compact and full county cards retain current context and source links', async ({ page }) => {
   for (const route of ['/', '/proiecte/']) {
     await page.goto(route);
     const map = page.locator('[data-project-map]');
     await expect(map).toHaveAttribute('data-map-ready', 'true');
     for (const project of projects) {
       await map.locator(`[data-project-list-controls] [data-project-slug="${project.slug}"]`).click();
-      const history = page.locator(`#proiect-${project.slug} [data-project-history]`);
-      await expect(history).toHaveText(historicalNote);
-      await history.scrollIntoViewIfNeeded();
-      await expect(history).toBeInViewport();
+      const context = page.locator(`#proiect-${project.slug} [data-project-evidence-context]`);
+      await expect(context).toHaveText(productionNote);
+      await expect(page.locator(`#proiect-${project.slug} .project-source`)).toHaveAttribute('href', project.sourceUrl);
+      await context.scrollIntoViewIfNeeded();
+      await expect(context).toBeInViewport();
     }
   }
 });
 
-test('map pins and project list synchronize keyboard selection without navigation', async ({ page }) => {
+test('map pins and county list synchronize keyboard selection without navigation', async ({ page }) => {
   await page.goto('/proiecte/');
   const map = page.locator('[data-project-map]');
   await expect(map).toHaveAttribute('data-map-ready', 'true');
+  await expect(page.locator('#proiect-mehedinti')).toBeVisible();
   const initialUrl = page.url();
   for (const [index, project] of projects.entries()) {
     const pin = map.locator(`[data-map-controls] [data-project-slug="${project.slug}"]`);
+    const listControl = map.locator(`[data-project-list-controls] [data-project-slug="${project.slug}"]`);
+    const localities = `Județul ${project.countyLabel}: ${project.localities.join(', ')}`;
+    await expect(pin).toHaveAccessibleName(`${String(index + 1).padStart(2, '0')} — ${localities}`);
+    await expect(listControl).toHaveAccessibleName(localities);
     await pin.focus();
     await page.keyboard.press(index % 2 === 0 ? 'Enter' : 'Space');
     await expect(pin).toHaveAttribute('aria-pressed', 'true');
-    await expect(map.locator(`[data-project-list-controls] [data-project-slug="${project.slug}"]`)).toHaveAttribute('aria-pressed', 'true');
+    await expect(listControl).toHaveAttribute('aria-pressed', 'true');
     await expect(page.locator(`#proiect-${project.slug}`)).toBeVisible();
     await expect(map.locator('[data-project-story]:visible')).toHaveCount(1);
-    await expect(map.locator('[data-map-status]')).toContainText(project.name);
+    await expect(map.locator('[data-map-status]')).toHaveText(`Localități selectate: ${project.countyLabel} — ${project.localities.join(', ')}.`);
     for (const other of projects.filter((candidate) => candidate.slug !== project.slug)) {
       await expect(map.locator(`[data-map-controls] [data-project-slug="${other.slug}"]`)).toHaveAttribute('aria-pressed', 'false');
     }
@@ -133,7 +143,7 @@ for (const project of projects.slice(1)) {
   });
 }
 
-test('mobile project fragments keep story locations below the sticky header', async ({ page }) => {
+test('mobile project fragments keep county locations below the sticky header', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 375, height: 812 });
   for (const project of projects.slice(1)) {
@@ -148,7 +158,7 @@ test('mobile project fragments keep story locations below the sticky header', as
   }
 });
 
-test('project hash changes synchronize selection, status, visibility, and scrolling', async ({ page }) => {
+test('project hash changes synchronize county selection, status, visibility, and scrolling', async ({ page }) => {
   const [first, second, third] = projects;
   await page.goto(`/proiecte/#proiect-${second.slug}`);
   const map = page.locator('[data-project-map]');
@@ -162,29 +172,30 @@ test('project hash changes synchronize selection, status, visibility, and scroll
   await expect(story).toBeVisible();
   await expect(map.locator('[data-project-story]:visible')).toHaveCount(1);
   await expect(story).toBeInViewport();
-  await expect(map.locator('[data-map-status]')).toContainText(third.name);
+  await expect(map.locator('[data-map-status]')).toHaveText(`Localități selectate: ${third.countyLabel} — ${third.localities.join(', ')}.`);
   await expect(map.locator(`[data-map-controls] [data-project-slug="${third.slug}"]`)).toHaveAttribute('aria-pressed', 'true');
   await expect(map.locator(`[data-project-list-controls] [data-project-slug="${third.slug}"]`)).toHaveAttribute('aria-pressed', 'true');
   await expect(map.locator(`[data-map-controls] [data-project-slug="${first.slug}"]`)).toHaveAttribute('aria-pressed', 'false');
 });
 
-test('an unknown project fragment keeps the default without turning control clicks into navigation', async ({ page }) => {
-  await page.goto('/proiecte/#proiect-necunoscut');
-  const map = page.locator('[data-project-map]');
-  const [first, , third] = projects;
-  await expect(map).toHaveAttribute('data-map-ready', 'true');
-  await expect(page.locator(`#proiect-${first.slug}`)).toBeVisible();
-  await expect(map.locator('[data-project-story]:visible')).toHaveCount(1);
+test('an unknown or malformed initial project fragment keeps the default without control navigation', async ({ page }) => {
+  for (const hash of ['#proiect-necunoscut', '#continut', '#proiect-%', '#proiect-%ZZ']) {
+    await page.goto(`/proiecte/${hash}`);
+    const map = page.locator('[data-project-map]');
+    const [first] = projects;
+    await expect(map).toHaveAttribute('data-map-ready', 'true');
+    await expect(page.locator(`#proiect-${first.slug}`)).toBeVisible();
+    await expect(map.locator('[data-project-story]:visible')).toHaveCount(1);
+  }
   const initialUrl = page.url();
-
-  const control = map.locator(`[data-project-list-controls] [data-project-slug="${third.slug}"]`);
+  const control = page.locator('[data-project-map] [data-project-list-controls] [data-project-slug="olt"]');
   await control.click();
   await expect(control).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator(`#proiect-${third.slug}`)).toBeVisible();
+  await expect(page.locator('#proiect-olt')).toBeVisible();
   expect(page.url()).toBe(initialUrl);
 });
 
-test('returning to an empty hash restores the first project story', async ({ page }) => {
+test('returning to an empty hash restores the Mehedinți county card', async ({ page }) => {
   const [first, second] = projects;
   await page.goto('/proiecte/');
   const map = page.locator('[data-project-map]');
@@ -204,7 +215,7 @@ test('returning to an empty hash restores the first project story', async ({ pag
   await expect(map.locator(`[data-project-list-controls] [data-project-slug="${first.slug}"]`)).toHaveAttribute('aria-pressed', 'true');
 });
 
-test('map cleanup removes fragment listeners and restores static content', async ({ page }) => {
+test('map cleanup removes fragment listeners and restores all static county cards', async ({ page }) => {
   await page.goto('/proiecte/');
   const map = page.locator('[data-project-map]');
   await expect(map).toHaveAttribute('data-map-ready', 'true');
@@ -261,6 +272,9 @@ test('small-screen map callouts keep every pointer target independently reachabl
 
     for (const project of projects) {
       const pin = map.locator(`[data-map-controls] [data-project-slug="${project.slug}"]`);
+      if (project.slug === 'calarasi') {
+        await expect(pin).toHaveCSS('transform', 'matrix(1, 0, 0, 1, -22, -22)');
+      }
       const bounds = await pin.boundingBox();
       expect(bounds?.width).toBeGreaterThanOrEqual(44);
       expect(bounds?.height).toBeGreaterThanOrEqual(44);
@@ -272,23 +286,32 @@ test('small-screen map callouts keep every pointer target independently reachabl
   }
 });
 
-test('project stories remain readable without JavaScript', async ({ browser }) => {
+test('project county cards remain readable without JavaScript', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('/proiecte/');
-  for (const project of projects) await expect(page.locator(`#proiect-${project.slug}`)).toBeVisible();
+  const map = page.locator('[data-project-map]');
+  await expect(map.locator('[data-project-story]')).toHaveCount(6);
+  await expect(map.locator('.project-source')).toHaveCount(6);
+  for (const project of projects) {
+    const story = page.locator(`#proiect-${project.slug}`);
+    await expect(story).toBeVisible();
+    await expect(story.locator('[data-project-localities] li')).toHaveText(project.localities);
+    await expect(story.locator('.project-source')).toBeVisible();
+  }
   await expect(page.locator('[data-map-controls]')).toBeHidden();
   await expect(page.locator('[data-project-list-controls]')).toBeHidden();
-  await expect(page.getByText(/Nu reprezintă adresele exacte/)).toBeVisible();
+  await expect(page.locator('.project-map__notes').getByText(productionNote, { exact: true })).toBeVisible();
   await context.close();
 });
 
-test('homepage uses the same accessible project map', async ({ page }) => {
+test('homepage uses the same accessible six-county project map', async ({ page }) => {
   await page.goto('/');
   const preview = page.locator('[data-home-projects]');
   const map = preview.locator('[data-project-map]');
   await expect(map).toHaveAttribute('data-map-ready', 'true');
-  await expect(map.locator('[data-project-story]')).toHaveCount(3);
-  await expect(preview.locator('[data-project-preview]')).toHaveCount(3);
+  await expect(map.locator('[data-project-story]')).toHaveCount(6);
+  await expect(preview.locator('[data-project-preview]')).toHaveCount(6);
+  await expect(map.locator('.project-source')).toHaveCount(6);
   await expect(preview.getByRole('link', { name: /Vezi proiectele/i })).toHaveAttribute('href', '/proiecte/');
 });

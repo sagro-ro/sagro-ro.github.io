@@ -5,13 +5,13 @@ import { getProjectSlugFromHash } from '../../src/scripts/project-fragment';
 const availableSlugs = projects.map((project) => project.slug);
 
 describe('project fragment parsing', () => {
-  it.each(projects.map((project) => project.slug))('accepts the documented project slug %s', (slug) => {
+  it.each(projects.map((project) => project.slug))('accepts the county slug %s', (slug) => {
     expect(getProjectSlugFromHash(`#proiect-${slug}`, availableSlugs)).toBe(slug);
   });
 
-  it('decodes encoded project slugs before matching them', () => {
-    expect(getProjectSlugFromHash('#proiect-calarasi%2Dferma%2Dvegetala', availableSlugs)).toBe('calarasi-ferma-vegetala');
-    expect(getProjectSlugFromHash('#proiect-%69alomita-ferma-baciu', availableSlugs)).toBe('ialomita-ferma-baciu');
+  it('decodes encoded county slugs before matching them', () => {
+    expect(getProjectSlugFromHash('#proiect-%64olj', availableSlugs)).toBe('dolj');
+    expect(getProjectSlugFromHash('#proiect-tele%6Frman', availableSlugs)).toBe('teleorman');
   });
 
   it.each([
@@ -19,9 +19,9 @@ describe('project fragment parsing', () => {
     '#',
     '#proiect-',
     '#continut',
-    'proiect-calarasi-ferma-vegetala',
+    'proiect-mehedinti',
     '#proiect-necunoscut',
-    '#PROIECT-calarasi-ferma-vegetala',
+    '#PROIECT-mehedinti',
   ])('rejects an empty, unrelated, or unknown hash: %s', (hash) => {
     expect(getProjectSlugFromHash(hash, availableSlugs)).toBeNull();
   });

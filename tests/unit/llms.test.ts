@@ -41,16 +41,19 @@ describe('curated llms.txt', () => {
     expect(content).toMatch(/telefon.*e-mail|e-mail.*telefon/i);
   });
 
-  it('attributes exactly three historical projects to Sagro and limits locations to counties', () => {
+  it('lists the six county groups with production locality copy and no editorial boilerplate', () => {
     const content = createLlmsTxt(new URL('https://sagro.ro'));
 
-    expect(content).toContain('## Proiecte documentate');
-    expect(content.match(/Județul /g)).toHaveLength(3);
-    for (const project of projects) expect(content).toContain(project.countyLabel);
-    expect(content).toMatch(/material istoric publicat de Sagro/i);
-    expect(content).toContain('nu verificări independente');
-    expect(content).toContain('Locațiile proiectelor sunt aproximative, la nivel de județ');
-    expect(content).toContain('nu reprezintă adrese sau coordonate exacte');
+    expect(content).toContain('## Localități cu implementări');
+    expect(content.match(/Județul /g)).toHaveLength(6);
+    for (const project of projects) {
+      expect(content).toContain(`Județul ${project.countyLabel}: ${project.localities.join(', ')}`);
+    }
+    expect(projects).toHaveLength(6);
+    expect(projects.flatMap((project) => project.localities)).toHaveLength(13);
+    expect(content).toContain('Localități cu implementări Sagro. Marcajele grupează implementările pe județe.');
+    expect(content).not.toMatch(/furnizate pentru această actualizare|revizuit\w* editorial|nu este o verificare independentă|singurele locuri furnizate/i);
+    expect(content).not.toMatch(/Ferma Baciu|Patino Robot|două sezoane|Ialomița|citat|povești|material istoric|Zimmatic.*(?:proiect|implement)/i);
   });
 
   it('uses an alternate deployment origin without duplicating paths', () => {

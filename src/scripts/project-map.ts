@@ -48,7 +48,7 @@ export function initProjectMap(root: HTMLElement): () => void {
     for (const path of root.querySelectorAll<SVGPathElement>('[data-county-id]')) {
       path.toggleAttribute('data-selected-county', path.dataset.countyId === project.countyId);
     }
-    if (announce) status.textContent = `Proiect selectat: ${project.name} — ${project.countyLabel}.`;
+    if (announce) status.textContent = `Localități selectate: ${project.countyLabel} — ${project.localities.join(', ')}.`;
   };
 
   const mapButtons = new Map<string, HTMLButtonElement>();

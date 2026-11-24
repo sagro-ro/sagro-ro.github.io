@@ -23,14 +23,21 @@ test('homepage presents equal irrigation journeys and the four primary systems',
   await expect(page.locator('[data-partners] img')).toHaveCount(3);
 });
 
-test('homepage previews only documented work and answers practical enquiry questions', async ({ page }) => {
+test('homepage previews supplied localities and answers practical enquiry questions', async ({ page }) => {
   await page.goto('/');
   const preview = page.locator('[data-home-projects]');
   await expect(preview).toBeVisible();
-  await expect(preview.locator('[data-project-preview]')).toHaveCount(3);
+  await expect(preview).toContainText('Șase județe și 13 localități');
+  await expect(preview.locator('[data-project-preview]')).toHaveCount(6);
+  await expect(preview.locator('.project-source')).toHaveCount(6);
+  await expect(preview).toContainText('Județul Mehedinți');
+  await expect(preview).toContainText('Județul Dolj');
+  await expect(preview).toContainText('Județul Olt');
+  await expect(preview).toContainText('Județul Teleorman');
   await expect(preview).toContainText('Județul Călărași');
-  await expect(preview).toContainText('Județul Ialomița');
   await expect(preview).toContainText('Județul Constanța');
+  await expect(preview).toContainText('Valea Stanciului');
+  await expect(preview).not.toContainText(/Ferma Baciu|Patino Robot|Ialomița|două sezoane/i);
   await expect(preview.getByRole('link', { name: /Vezi proiectele/i })).toHaveAttribute('href', '/proiecte/');
 
   const faq = page.locator('[data-faq]');

@@ -37,7 +37,7 @@ const projectCountyIds = new Set(projects.map((project) => project.countyId));
             data-project-slug={project.slug}
             aria-controls={`proiect-${project.slug}`}
             aria-pressed="false"
-            aria-label={`${String(index + 1).padStart(2, '0')} — ${project.countyLabel}: ${project.name}`}
+            aria-label={`${String(index + 1).padStart(2, '0')} — Județul ${project.countyLabel}: ${project.localities.join(', ')}`}
             hidden
           >
             <MapPin aria-hidden="true" />
@@ -46,12 +46,12 @@ const projectCountyIds = new Set(projects.map((project) => project.countyId));
         ))}
       </div>
     </div>
-    <p class="project-map__key"><span aria-hidden="true"></span>Zonă de județ cu proiect documentat</p>
+    <p class="project-map__key"><span aria-hidden="true"></span>Județ cu implementări Sagro</p>
     <p class="project-map__status" data-map-status aria-live="polite" aria-atomic="true"></p>
   </div>
 
   <div class="project-map__content">
-    <div class="project-list-controls" data-project-list-controls hidden aria-label="Selectează un proiect">
+    <div class="project-list-controls" data-project-list-controls hidden aria-label="Selectează un județ pentru a vedea localitățile">
       {projects.map((project) => (
         <button
           type="button"
@@ -59,8 +59,8 @@ const projectCountyIds = new Set(projects.map((project) => project.countyId));
           aria-pressed="false"
           data-project-slug={project.slug}
         >
-          <span>{project.countyLabel}</span>
-          <span>{project.systemLabel}</span>
+          <span>Județul {project.countyLabel}:</span>
+          <span>{project.localities.join(', ')}</span>
         </button>
       ))}
     </div>

@@ -10,5 +10,5 @@ export const site = {
   emailHref: 'mailto:contact@sagro.ro',
   address: 'Str. Primăverii 161, Poiana Mare, Dolj',
   projectDisclaimer:
-    'Locațiile de pe hartă sunt aproximative, la nivel de județ. Nu reprezintă adresele exacte ale instalațiilor.',
+    'Localități cu implementări Sagro. Marcajele grupează implementările pe județe.',
 } as const;

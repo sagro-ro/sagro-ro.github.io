@@ -1,45 +1,55 @@
 import { describe, expect, it } from 'vitest';
-import { projectEvidence, getProjectSourceUrl } from '../../src/data/project-evidence';
+import { getProjectSourceUrl, projectEvidence, projectEvidenceNote } from '../../src/data/project-evidence';
 import { projects } from '../../src/data/projects';
 
-describe('documented implementation projects', () => {
-  it('contains only the three unique documented county areas', () => {
-    expect(projects.map((project) => [project.slug, project.countyId])).toEqual([
-      ['calarasi-ferma-vegetala', 'ro-cl'],
-      ['ialomita-ferma-baciu', 'ro-il'],
-      ['constanta-patino-robot', 'ro-ct'],
+describe('supplied implementation county groups', () => {
+  it('contains exactly the six ordered counties with unique geometry and source anchors', () => {
+    expect(projects.map((project) => [project.slug, project.countyId, project.countyLabel, project.localities])).toEqual([
+      ['mehedinti', 'ro-mh', 'Mehedinți', ['Vânători']],
+      ['dolj', 'ro-dj', 'Dolj', ['Băilești', 'Rojiște', 'Listeava', 'Ostroveni', 'Valea Stanciului']],
+      ['olt', 'ro-ot', 'Olt', ['Corabia', 'Vișina']],
+      ['teleorman', 'ro-tr', 'Teleorman', ['Turnu Măgurele', 'Traian']],
+      ['calarasi', 'ro-cl', 'Călărași', ['Borcea', 'Mănăstirea']],
+      ['constanta', 'ro-ct', 'Constanța', ['Horia']],
     ]);
-    expect(new Set(projects.map((project) => project.slug)).size).toBe(3);
-  });
-
-  it('links to durable, dated and owner-attributed historical evidence', () => {
-    expect(projectEvidence).toEqual({
-      route: '/surse-proiecte/',
-      historicalUrl: 'https://sagro.ro/pages/sisteme-irigatii',
-      reviewedAtLabel: '12 noiembrie 2026',
-    });
-    expect(getProjectSourceUrl('ialomita-ferma-baciu')).toBe('/surse-proiecte/#sursa-ialomita-ferma-baciu');
-    expect(projects.map((project) => project.sourceUrl)).toEqual([
-      '/surse-proiecte/#sursa-calarasi-ferma-vegetala',
-      '/surse-proiecte/#sursa-ialomita-ferma-baciu',
-      '/surse-proiecte/#sursa-constanta-patino-robot',
-    ]);
-  });
-
-  it('retains evidence and avoids exact-premises geolocation', () => {
+    expect(new Set(projects.map((project) => project.slug)).size).toBe(6);
+    expect(new Set(projects.map((project) => project.countyId)).size).toBe(6);
     for (const project of projects) {
-      expect(project.quote.trim().length).toBeGreaterThan(20);
-      expect(project.summary).toMatch(/Zimmatic/i);
-      expect(project).not.toHaveProperty('coordinates');
-      expect(project).not.toHaveProperty('latitude');
-      expect(project).not.toHaveProperty('longitude');
-      expect(JSON.stringify(project)).not.toMatch(/Poiana Mare|Predești|Craiova|Strada|Str\./i);
+      expect(project.sourceUrl).toBe(`/surse-proiecte/#sursa-${project.slug}`);
     }
   });
 
-  it('keeps the documented customer context', () => {
-    expect(projects[0]?.summary).toMatch(/porumb/i);
-    expect(projects[1]?.summary).toMatch(/două sezoane/i);
-    expect(projects[2]?.summary).toMatch(/sursa de apă/i);
+  it('uses production locality copy while retaining internal provenance', () => {
+    expect(projectEvidence).toEqual({
+      route: '/surse-proiecte/',
+      reviewedAtLabel: '24 noiembrie 2026',
+    });
+    expect(getProjectSourceUrl('dolj')).toBe('/surse-proiecte/#sursa-dolj');
+    expect(projectEvidenceNote).toBe('Localități cu implementări Sagro. Marcajele grupează implementările pe județe.');
+  });
+
+  it('excludes former rich-story fields, unpreserved spellings, and exact-premises geolocation', () => {
+    for (const project of projects) {
+      expect(Object.keys(project).sort()).toEqual(['countyId', 'countyLabel', 'localities', 'slug', 'sourceUrl']);
+      expect(JSON.stringify(project)).not.toMatch(/name|clientLabel|systemLabel|summary|quote|latitude|longitude|coordinates|Craiova|Predești|Rojiste|Visina/i);
+    }
+  });
+
+  it('keeps exactly the 13 supplied localities in order', () => {
+    expect(projects.flatMap((project) => project.localities)).toEqual([
+      'Vânători',
+      'Băilești',
+      'Rojiște',
+      'Listeava',
+      'Ostroveni',
+      'Valea Stanciului',
+      'Corabia',
+      'Vișina',
+      'Turnu Măgurele',
+      'Traian',
+      'Borcea',
+      'Mănăstirea',
+      'Horia',
+    ]);
   });
 });
