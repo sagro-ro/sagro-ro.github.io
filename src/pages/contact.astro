@@ -30,7 +30,7 @@ const initialType = getEnquiryType(Astro.url.searchParams);
     <div class="container contact-layout">
       <ContactForm endpoint={endpoint} initialType={initialType} />
       <aside class="contact-aside" aria-label="Date de contact și informații utile">
-        <section>
+        <section class="contact-aside__direct">
           <h2>Contact direct</h2>
           <p class="contact-aside__company">{site.legalName}</p>
           <p>{site.registration.join(' · ')}</p>
@@ -43,9 +43,9 @@ const initialType = getEnquiryType(Astro.url.searchParams);
         <section>
           <h2>Pregătește discuția</h2>
           <ul class="contact-aside__info">
-            <li><Sprout aria-hidden="true" /> Suprafața și forma parcelei, cultura și modul de utilizare.</li>
-            <li><Droplets aria-hidden="true" /> Sursa de apă și condițiile terenului.</li>
-            <li><Zap aria-hidden="true" /> Disponibilitatea energiei electrice.</li>
+            <li><span class="contact-aside__info-marker" aria-hidden="true">—</span><Sprout aria-hidden="true" /><span>Suprafața și forma parcelei, cultura și modul de utilizare.</span></li>
+            <li><span class="contact-aside__info-marker" aria-hidden="true">—</span><Droplets aria-hidden="true" /><span>Sursa de apă și condițiile terenului.</span></li>
+            <li><span class="contact-aside__info-marker" aria-hidden="true">—</span><Zap aria-hidden="true" /><span>Disponibilitatea energiei electrice.</span></li>
           </ul>
           <p>Pentru service sunt utile tipul echipamentului, județul și simptomele apărute. Aceste repere nu adaugă câmpuri obligatorii în formular.</p>
         </section>

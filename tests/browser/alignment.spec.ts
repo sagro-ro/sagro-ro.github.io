@@ -91,6 +91,93 @@ test('footer branding and contact links are centered within their columns', asyn
   }
 });
 
+test('direct contact content is centered within its section', async ({ page }) => {
+  for (const width of [1440, 768, 375, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/contact/');
+
+    const directContact = page.locator('.contact-aside section').filter({
+      has: page.getByRole('heading', { name: 'Contact direct', exact: true }),
+    });
+    await expect(directContact).toHaveCount(1);
+
+    const contents = await directContact.evaluate((section) => {
+      const sectionBounds = section.getBoundingClientRect();
+      const sectionCenter = sectionBounds.x + sectionBounds.width / 2;
+      return [...section.querySelectorAll(':scope > h2, :scope > p, dt, dd')].map((element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const bounds = range.getBoundingClientRect();
+        const contentCenter = bounds.x + bounds.width / 2;
+        return {
+          label: `${element.tagName.toLowerCase()}: ${element.textContent?.trim()}`,
+          textAlign: getComputedStyle(element).textAlign,
+          centerOffset: Math.abs(contentCenter - sectionCenter),
+        };
+      });
+    });
+
+    expect(contents.length).toBe(9);
+    for (const content of contents) {
+      expect(content.textAlign, `${content.label} text alignment at ${width}px`).toBe('center');
+      expect(content.centerOffset, `${content.label} center at ${width}px`).toBeLessThanOrEqual(1);
+    }
+  }
+});
+
+test('preparation guidance and complete icon groups are centered', async ({ page }) => {
+  for (const width of [1440, 768, 375, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/contact/');
+
+    const preparation = page.locator('.contact-aside section').filter({
+      has: page.getByRole('heading', { name: 'Pregătește discuția', exact: true }),
+    });
+    await expect(preparation).toHaveCount(1);
+
+    const contents = await preparation.evaluate((section) => {
+      const sectionBounds = section.getBoundingClientRect();
+      const sectionCenter = sectionBounds.x + sectionBounds.width / 2;
+      return [...section.querySelectorAll(':scope > h2, :scope > p, .contact-aside__info li')].map((element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const bounds = range.getBoundingClientRect();
+        const contentCenter = bounds.x + bounds.width / 2;
+        const isListItem = element.matches('li');
+        const continuationOffsets: number[] = [];
+        const copyText = isListItem ? element.querySelector(':scope > span:last-child')?.firstChild : null;
+        if (copyText) {
+          const copyRange = document.createRange();
+          copyRange.selectNodeContents(copyText);
+          continuationOffsets.push(...[...copyRange.getClientRects()].slice(1).map((rect) => Math.abs(rect.x + rect.width / 2 - sectionCenter)));
+        }
+        return {
+          label: `${element.tagName.toLowerCase()}: ${element.textContent?.trim()}`,
+          textAlign: getComputedStyle(element).textAlign,
+          centerOffset: Math.abs(contentCenter - sectionCenter),
+          continuationOffsets,
+          isListItem,
+          paddingLeft: isListItem ? getComputedStyle(element).paddingLeft : null,
+          markerContent: isListItem ? getComputedStyle(element, '::before').content : null,
+        };
+      });
+    });
+
+    expect(contents.length).toBe(5);
+    for (const content of contents) {
+      expect(content.textAlign, `${content.label} text alignment at ${width}px`).toBe('center');
+      expect(content.centerOffset, `${content.label} center at ${width}px`).toBeLessThanOrEqual(1);
+      for (const offset of content.continuationOffsets) {
+        expect(offset, `${content.label} wrapped line center at ${width}px`).toBeLessThanOrEqual(1);
+      }
+      if (content.isListItem) {
+        expect(content.paddingLeft, `${content.label} left padding at ${width}px`).toBe('0px');
+        expect(content.markerContent, `${content.label} decorative marker placement at ${width}px`).toBe('none');
+      }
+    }
+  }
+});
+
 test('service workflow introduction is centered within its section', async ({ page }) => {
   for (const width of [1440, 768, 375]) {
     await page.setViewportSize({ width, height: 900 });
