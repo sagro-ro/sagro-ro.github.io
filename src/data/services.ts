@@ -19,7 +19,7 @@ export const serviceScopes = [
 
 export const serviceSteps = [
   { title: 'Solicitare și detalii', description: 'Ne spui ce echipament folosești, unde se află și ce simptome ai observat.' },
-  { title: 'Evaluare și diagnostic', description: 'Analizăm informațiile și stabilim verificările necesare pentru evaluarea tehnica și diagnostic.' },
+  { title: 'Evaluare și diagnostic', description: 'Analizăm informațiile și stabilim verificările necesare pentru evaluarea tehnică și diagnostic.' },
   { title: 'Intervenție agreată', description: 'În funcție de evaluare, stabilim lucrările propuse și modul în care va fi realizată intervenția.' },
   { title: 'Verificare și suport', description: 'După lucrările agreate, funcționarea este verificată și discutăm recomandările relevante pentru utilizare.' },
 ] as const;

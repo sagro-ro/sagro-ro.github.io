@@ -43,3 +43,11 @@ Irrigation after-installation service, periodic checks, technical interventions 
 Only public Sagro/Shopify logo, irrigation, equipment and partner assets selected for local use are imported. Original URLs and reviewed alt text are stored in `src/data/media.ts`. Brand art is never described as a particular customer's installation unless the source page explicitly establishes that relationship.
 
 The bundled Romania map is from `@svg-maps/romania` 2.0.0, viewBox `0 0 613 433`. Its README identifies the source as MapSVG's Romania map, https://mapsvg.com/maps/romania, under CC BY 4.0; attribution is preserved in `THIRD_PARTY_NOTICES.md` and the project-map UI.
+
+## Legacy migration and project-source follow-up — 24 noiembrie 2026
+
+The historical source observations above remain unchanged. The implementation prepared on 24 noiembrie 2026 adds explicit handling only for legacy URLs whose relevant material is represented in this audit: the irrigation page, contact, privacy policy, about page, Zimmatic, Idrofoglia, and Green Power. See `docs/discovery-maintenance.md` for the exact destinations.
+
+The old machinery-service URL is deliberately not redirected to `/service-mentenanta/`: the scopes are not equivalent. The undocumented `/pages/irigatii` search sample is not enough evidence for another mapping. Neither decision adds back the removed catalog or transfers old machinery claims to irrigation service.
+
+Project cards now point to an owner-controlled source-context page rather than implying that the former `/pages/sisteme-irigatii` URL still exposes the recorded stories in their old form. The 12 noiembrie 2026 date is the date of this content review, not an inferred original publication or commissioning date. Sagro-published project material is not independent verification; seasonal wording remains historical and does not update automatically.

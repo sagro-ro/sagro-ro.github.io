@@ -1,3 +1,8 @@
+# Declarative rules for a compatible host/CDN; GitHub Pages does not execute them.
 /pages/sisteme-irigatii /sisteme-irigatii/ 301
-/pages/service /service-mentenanta/ 301
 /pages/contact /contact/ 301
+/policies/privacy-policy /politica-confidentialitate/ 301
+/pages/despre-noi /sisteme-irigatii/ 301
+/products/sisteme-irigatii-zimmatic /sisteme-irigatii/ 301
+/products/sisteme-idrofoglia /sisteme-irigatii/ 301
+/products/generatoare-green-power /sisteme-irigatii/ 301

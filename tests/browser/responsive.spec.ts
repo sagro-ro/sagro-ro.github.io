@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
-import { legalRoutes, primaryRoutes } from '../../src/data/routes';
+import { legalRoutes, primaryRoutes, supportingRoutes } from '../../src/data/routes';
 
-const routes = [...primaryRoutes, ...legalRoutes];
+const routes = [...primaryRoutes, ...supportingRoutes, ...legalRoutes];
 
 async function expectNoHorizontalOverflow(page: Page, context: string) {
   const dimensions = await page.evaluate(() => ({

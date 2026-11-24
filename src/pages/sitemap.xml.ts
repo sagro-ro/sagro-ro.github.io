@@ -1,8 +1,8 @@
 import type { APIRoute } from 'astro';
-import { legalRoutes, primaryRoutes } from '../data/routes';
+import { legalRoutes, primaryRoutes, supportingRoutes } from '../data/routes';
 
 export function getSitemapUrls(site: URL): string[] {
-  return [...primaryRoutes, ...legalRoutes].map((route) => new URL(route.href, site).href);
+  return [...primaryRoutes, ...supportingRoutes, ...legalRoutes].map((route) => new URL(route.href, site).href);
 }
 
 export function createSitemapXml(site: URL): string {
