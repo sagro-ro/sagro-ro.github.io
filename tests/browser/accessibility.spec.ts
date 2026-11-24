@@ -1,8 +1,8 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { legalRoutes, primaryRoutes } from '../../src/data/routes';
+import { legalRoutes, primaryRoutes, supportingRoutes } from '../../src/data/routes';
 
-const routes = [...primaryRoutes, ...legalRoutes];
+const routes = [...primaryRoutes, ...supportingRoutes, ...legalRoutes];
 
 for (const viewport of [
   { name: 'desktop', width: 1440, height: 900 },

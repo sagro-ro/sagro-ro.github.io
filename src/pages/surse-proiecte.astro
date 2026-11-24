@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { projectEvidence, projectHistoricalNote } from '../data/project-evidence';
+import { projects } from '../data/projects';
+import { site } from '../data/site';
+import '../styles/legal.css';
+---
+<BaseLayout
+  title="Surse și context pentru proiectele de irigații"
+  description="Atribuirea istorică, data revizuirii și limitele celor trei relatări despre proiecte de irigații publicate de Sagro."
+>
+  <header class="legal-hero">
+    <div class="container">
+      <p class="eyebrow">Contextul documentației</p>
+      <h1>Sursele poveștilor din câmp.</h1>
+      <p>Trei relatări publicate de Sagro, cu sursa istorică, momentul revizuirii și limitele prezentate explicit.</p>
+    </div>
+  </header>
+
+  <article class="legal-body">
+    <div class="container legal-prose">
+      <section>
+        <h2>Ce reprezintă aceste relatări</h2>
+        <p>
+          Relatările și citatele de mai jos au fost publicate de Sagro pe
+          <a href={projectEvidence.historicalUrl}>fosta pagină Sagro despre irigații</a>.
+          Conținutul a fost consemnat în revizuirea editorială din {projectEvidence.reviewedAtLabel}.
+        </p>
+        <p>Fosta adresă nu mai oferă relatările în forma consemnată. Această atribuire nu este o verificare independentă și nu completează informațiile lipsă despre lucrări. Data revizuirii nu este prezentată drept data publicării originale.</p>
+        <p>Formularea „de două sezoane” redă materialul istoric consemnat la data revizuirii, nu o actualizare automată în timp. {site.projectDisclaimer}</p>
+        <p>Nu deducem adrese, coordonate sau rezultate măsurate din aceste relatări. Poveștile complete și reperele lor geografice sunt disponibile în <a href="/proiecte/">pagina proiectelor</a>.</p>
+      </section>
+
+      {projects.map((project) => (
+        <section class="project-evidence" id={`sursa-${project.slug}`} data-project-evidence>
+          <p class="eyebrow">{project.countyLabel} / {project.clientLabel}</p>
+          <h2>{project.name}</h2>
+          <p class="project-evidence__context" data-project-evidence-context>
+            {projectHistoricalNote} Sursa este <a href={projectEvidence.historicalUrl}>fosta pagină Sagro despre irigații</a>. Această atribuire nu este o verificare independentă. Locația este aproximativă, la nivel de județ; nu deducem adresa sau coordonatele instalării.
+          </p>
+          <p><strong>{project.systemLabel}</strong></p>
+          <p>{project.summary}</p>
+          <blockquote><p>„{project.quote}”</p></blockquote>
+          <p><a class="project-evidence__back" href={`/proiecte/#proiect-${project.slug}`}>Vezi proiectul în hartă</a></p>
+        </section>
+      ))}
+    </div>
+  </article>
+</BaseLayout>

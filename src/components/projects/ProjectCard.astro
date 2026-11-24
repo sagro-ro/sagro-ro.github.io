@@ -1,5 +1,6 @@
 ---
 import type { Project } from '../../data/projects';
+import { projectHistoricalNote } from '../../data/project-evidence';
 
 interface Props {
   project: Project;
@@ -18,14 +19,15 @@ const Heading = compact ? 'h3' : 'h2';
   <header class="project-story__header">
     <p class="project-story__location">{project.countyLabel} / {project.clientLabel}</p>
     <Heading>{project.name}</Heading>
+    <p class="project-story__history" data-project-history>{projectHistoricalNote}</p>
     <p class="project-story__system">{project.systemLabel}</p>
   </header>
   <p class="project-story__summary">{project.summary}</p>
   <blockquote><p>„{project.quote}”</p></blockquote>
   <footer>
     {!compact && (
-      <a class="text-link project-source" href={project.sourceUrl} target="_blank" rel="noopener noreferrer">
-        Sursa: pagina Sagro despre irigații
+      <a class="text-link project-source" href={project.sourceUrl}>
+        Vezi sursa și contextul publicării
       </a>
     )}
   </footer>

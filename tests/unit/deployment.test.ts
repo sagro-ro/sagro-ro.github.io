@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import { describe, expect, it } from 'vitest';
 
 const root = new URL('../../', import.meta.url);
@@ -6,8 +6,12 @@ const readWorkspaceFile = (path: string) => readFile(new URL(path, root), 'utf8'
 
 const legacyRedirects = [
   ['/pages/sisteme-irigatii', '/sisteme-irigatii/'],
-  ['/pages/service', '/service-mentenanta/'],
   ['/pages/contact', '/contact/'],
+  ['/policies/privacy-policy', '/politica-confidentialitate/'],
+  ['/pages/despre-noi', '/sisteme-irigatii/'],
+  ['/products/sisteme-irigatii-zimmatic', '/sisteme-irigatii/'],
+  ['/products/sisteme-idrofoglia', '/sisteme-irigatii/'],
+  ['/products/generatoare-green-power', '/sisteme-irigatii/'],
 ] as const;
 
 describe('GitHub Pages deployment', () => {
@@ -41,6 +45,15 @@ describe('GitHub Pages deployment', () => {
     expect(html).toContain(`<meta http-equiv="refresh" content="0; url=${targetPath}">`);
     expect(html).toContain(`<a href="${targetPath}">`);
     expect(html).toContain('window.location.search');
+    expect(html).toContain('window.location.replace');
     expect(html).toContain('window.location.hash');
+  });
+
+  it('excludes non-equivalent service and blanket legacy rules', async () => {
+    await expect(access(new URL('public/pages/service/index.html', root))).rejects.toMatchObject({ code: 'ENOENT' });
+    const rules = (await readWorkspaceFile('public/_redirects')).split('\n').map((line) => line.trim()).filter((line) => line && !line.startsWith('#'));
+
+    expect(rules).toEqual(legacyRedirects.map(([legacyPath, targetPath]) => `${legacyPath} ${targetPath} 301`));
+    expect(rules.some((rule) => rule.split(/\s+/)[0]?.includes('*'))).toBe(false);
   });
 });

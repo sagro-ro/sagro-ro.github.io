@@ -1,3 +1,5 @@
+import { getProjectSourceUrl } from './project-evidence';
+
 export type CountyId = 'ro-cl' | 'ro-il' | 'ro-ct';
 
 export interface Project {
@@ -9,7 +11,7 @@ export interface Project {
   systemLabel: string;
   summary: string;
   quote: string;
-  sourceUrl: 'https://sagro.ro/pages/sisteme-irigatii';
+  sourceUrl: string;
 }
 
 export const projects = [
@@ -23,7 +25,7 @@ export const projects = [
     summary:
       'Un pivot Zimmatic ales prin Sagro pentru irigarea unei suprafețe mari de porumb, cu accent pe distribuția uniformă a apei.',
     quote: 'Am ales un pivot Zimmatic prin Sagro pentru o suprafață mare de porumb.',
-    sourceUrl: 'https://sagro.ro/pages/sisteme-irigatii',
+    sourceUrl: getProjectSourceUrl('calarasi-ferma-vegetala'),
   },
   {
     slug: 'ialomita-ferma-baciu',
@@ -35,7 +37,7 @@ export const projects = [
     summary:
       'Ferma Baciu folosește sistemul Zimmatic de două sezoane, după sprijinul primit de la Sagro pentru configurare și instalare.',
     quote: 'Folosim sistemul de irigații Zimmatic de două sezoane și suntem foarte mulțumiți.',
-    sourceUrl: 'https://sagro.ro/pages/sisteme-irigatii',
+    sourceUrl: getProjectSourceUrl('ialomita-ferma-baciu'),
   },
   {
     slug: 'constanta-patino-robot',
@@ -47,6 +49,6 @@ export const projects = [
     summary:
       'Pentru soluția Zimmatic propusă de Sagro, echipa a analizat terenul, cultura și sursa de apă, până la punerea în funcțiune.',
     quote: 'Am apreciat foarte mult modul de lucru al echipei Sagro.',
-    sourceUrl: 'https://sagro.ro/pages/sisteme-irigatii',
+    sourceUrl: getProjectSourceUrl('constanta-patino-robot'),
   },
 ] as const satisfies readonly Project[];

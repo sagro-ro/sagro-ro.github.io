@@ -1,14 +1,65 @@
 # Verification — Sagro irrigation website
 
 **Initial verification:** 2026-11-12  
-**Latest verification including GitHub Pages preparation:** 2026-11-23  
-**Scope:** the complete standalone Astro implementation in `/workspace/web`, including source, unit/data checks, real Chromium interaction, responsive layouts, production output, content provenance, and visual evidence.
+**Previous verification including GitHub Pages preparation:** 2026-11-23
+**Latest discovery-readiness verification:** 2026-11-24
+**Scope:** the complete standalone Astro implementation in the isolated discovery-readiness worktree, including source, unit/data checks, real Chromium interaction, responsive layouts, production output, content provenance, and visual evidence.
 
-This is a local implementation and verification record. It is not evidence of production deployment, live enquiry delivery, host-level redirects, or accessibility certification.
+This is a local implementation and verification record. It is not evidence of production deployment, live enquiry delivery, host-level redirects, or accessibility certification. The dated section below is the current result; later sections retain earlier observations and historical counts.
 
-## Final automated verification
+## Discovery-readiness verification — 2026-11-24
 
-All commands below were run after the latest implementation fixes and exited with code 0.
+### Fresh automated gate
+
+The following commands were run **in this order**, after the final implementation fixes, and each exited with code 0:
+
+| Command | Observed result |
+| --- | --- |
+| `npm run typecheck` | **76 files checked; 0 errors, 0 warnings, 0 hints**. |
+| `npm test` | **12 test files, 97/97 unit/data tests passed**. |
+| `npm run build` | **9 Astro pages built**: eight indexed HTML routes plus `404.html`; `llms.txt`, `sitemap.xml`, and `robots.txt` were also generated. |
+| `npm run test:browser` | **67/67 browser tests passed**, excluding the separately run `@a11y` cases. Coverage includes the three project fragments, source-link journeys with in-viewport provenance, historical qualifiers on homepage and project cards, settled reduced-motion mobile header clearance, the generated recovery canonical, seven static fallbacks, unique titles, verified structured address data, plain-text `llms.txt`, and the previously existing interactions. |
+| `npm run test:a11y` | **17/17 scoped axe cases passed**: eight indexed routes at desktop and mobile sizes, plus open mobile navigation. No serious or critical violations were reported in the tested landmarks. |
+
+The contact transport tests continue to intercept the reserved `https://forms.example.test/solicitari` endpoint locally. It is not a real provider and no customer data was sent to an external form service. The default production form remains disabled.
+
+### Independent review and correction evidence
+
+The independent whole-tree reviewer reported **no Critical findings** and two **Important** provenance findings. Both were reproduced RED and corrected:
+
+- Direct `#sursa-*` links could leave all attribution and historical limitations above the viewport. `direct evidence fragments keep provenance and historical limits in view` initially failed because local evidence context did not exist. Each evidence section now contains its own dated owner-attribution, independence and approximate-location qualifications; the corrected test follows each real project-source link and requires that context to be in the 375px viewport.
+- Homepage and project cards could present the historical two-season wording without a local temporal qualifier, and compact homepage cards had no direct source link. `project cards qualify historical duration on homepage and project route` initially failed because the marker did not exist. Every card now carries the centralized historical note next to its story and source relationship.
+
+A first full post-review run stopped at **65 passed / 2 failed of 67** before the axe stage. One failure was an old strict locator that intentionally began matching the new per-section historical links; it was narrowed to the introductory section. The other synthetic test rapidly assigned consecutive same-document source fragments before native smooth scrolling settled and intermittently stayed at the previous target. Real elapsed-time tracing separated this from the actual cross-page user journey. The replacement follows each source link from `/proiecte/` without forcing scrolling, disabling motion, increasing timeouts, or weakening the viewport assertion. The three affected checks passed **15/15 executions across five repeats**, followed by the complete green gate above. The original direct-anchor RED result and its production fix are retained here rather than represented as an initially green test.
+
+The reviewer also identified one **Minor deferred** lifecycle edge: invoking a stale cleanup handle after reinitializing the same map can dismantle the replacement and leave its hash listener active. No current client-navigation path invokes that sequence; it was intentionally not changed in this one-pass Important-fix review.
+
+### Fresh built-output audit
+
+A Node filesystem/URL audit ran against the new `dist/` produced by the gate and reported:
+
+- **66 generated files**, including **16 HTML documents**: nine Astro pages and seven legacy fallback documents.
+- **316** same-origin `href` occurrences covering **34 unique targets**; **0 unresolved link or fragment targets**.
+- **8 sitemap entries**, all resolving to generated indexed HTML in primary, supporting, then legal route order. `llms.txt`, recovery, and fallback documents are excluded.
+- **7 reviewed `_redirects` rules** and **7 corresponding static fallback documents**, with valid local destinations. `/pages/service/` deliberately has **no** mapping or fallback and uses ordinary 404 recovery.
+- **3/3** project source anchors and backlinks resolve, **8/8** curated `llms.txt` links use canonical HTTPS destinations, and **0** produced files contain the intercepted test-form endpoint.
+- The production contact form has an empty endpoint, no `action`, a disabled fieldset and submit button, and its visible unconfigured notice.
+
+The seven static fallbacks return **HTTP 200** in the local static preview and then navigate in the browser. They are **not** host/CDN 301 or 308 responses, and GitHub Pages does not execute `_redirects`.
+
+### Actual production-preview journeys
+
+The post-fix production preview on `127.0.0.1:4324` was exercised in Chromium. The audit visited all three desktop project fragment URLs, clicked all three project-source links, visited all three mobile source anchors, checked visible keyboard focus on each source backlink, and completed all three back navigations. It also confirmed all three project stories remain visible without JavaScript, found **0 horizontal-overflow failures**, and captured **0 uncaught page errors**.
+
+Desktop and 375px `/surse-proiecte/` screenshots and a 375px selected-project screenshot were regenerated, opened, and visually inspected. The source copy and backlinks are readable at both sizes. In the final mobile project capture, the Constanța location and complete story heading are visible below the sticky header. A reduced-motion regression had previously reproduced a **9.203125px** settled header overlap; the added story scroll margin passed that regression and the full responsive/browser gates above.
+
+### Remaining external limits
+
+These checks do **not** establish public host/CDN redirect headers, DNS, TLS, HTTPS enforcement or `www` behavior; Search Console ownership, inspection, sitemap processing or coverage; external Google rich-result validation or eligibility; actual AI crawler visits, indexing, citations, rankings or recommendations; or real enquiry delivery. No public deployment or infrastructure change was performed as part of this verification. The scoped axe checks are not WCAG certification; Safari, Firefox, physical devices and assistive-technology sessions were not tested.
+
+## Historical automated verification through 2026-11-23
+
+The historical commands below were run after the implementation fixes current on 2026-11-23 and exited with code 0. They do not replace the fresh 2026-11-24 results above.
 
 | Command | Observed result |
 | --- | --- |
@@ -38,7 +89,7 @@ A Node filesystem/URL audit of `dist/` checked every same-origin anchor, URL fra
 
 Automated checks cover:
 
-- WCAG 2/2.1 A and AA axe rules on `/`, `/sisteme-irigatii/`, `/service-mentenanta/`, `/proiecte/`, `/contact/`, `/politica-confidentialitate/`, and `/termeni-conditii/` at **1440×900** and **375×812**.
+- WCAG 2/2.1 A and AA axe rules on `/`, `/sisteme-irigatii/`, `/service-mentenanta/`, `/proiecte/`, `/surse-proiecte/`, `/contact/`, `/politica-confidentialitate/`, and `/termeni-conditii/` at **1440×900** and **375×812**.
 - Axe on the **open** mobile menu, not only the default closed state.
 - First-tab skip link, visible focus outline, focus movement to the main landmark, explicit image alternatives, error-summary focus, and the next keyboard stop within the form.
 - Mobile menu activation, `aria-expanded`, Escape, focus restoration, repeated open/close behavior, and navigation.
@@ -47,7 +98,7 @@ Automated checks cover:
 - Native FAQs and essential sections without JavaScript; all three project stories remain readable without JavaScript and the interactive controls are hidden in that mode.
 - Reduced-motion content and CTA navigation.
 - No horizontal document overflow at **320, 375, 768, 1024, and 1440px**, including open navigation and selected project details. This is measured with `scrollWidth`, not concealed with blanket `overflow-x: hidden`.
-- **200% root text sizing at 1280px** on all seven indexed routes, including long Romanian words and the wrapping header/navigation. This is text scaling coverage, not a claim that every browser zoom mode has been tested.
+- **200% root text sizing at 1280px** on all eight indexed routes, including long Romanian words and the wrapping header/navigation. This is text scaling coverage, not a claim that every browser zoom mode has been tested.
 
 An axe scan is not a manual WCAG audit, and a zero-violation result is not proof of complete accessibility conformance. Testing used Chromium and emulated viewports; Safari, Firefox, physical mobile devices, and assistive-technology sessions were not performed.
 
@@ -155,7 +206,7 @@ The map continues to bundle `@svg-maps/romania` 2.0.0 geometry, preserves visibl
 - **No real form delivery:** no endpoint credentials/provider were supplied, no external processing/retention agreement was verified, and no real success/delivery claim is made. Before enabling a provider, endpoint abuse controls, server-side validation, provider-specific privacy/retention text, and a real delivery test remain necessary.
 - **No legal review:** privacy and terms text describes this implementation; it is general site information, not a service contract, warranty, or legal certification.
 - **No CMS, ecommerce, CRM, analytics, or catalog integration** was implemented.
-- **No Git integration:** this workspace is intentionally non-Git; no commits, pushes, merge, or Git-range review were performed.
+- **Git/release boundary:** earlier website work was committed before this plan. The discovery-readiness changes remain uncommitted in the isolated implementation worktree; no commits, pushes, merges, or deployments were performed for this plan.
 
 ## Reproduction notes
 

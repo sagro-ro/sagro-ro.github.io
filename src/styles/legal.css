@@ -25,6 +25,10 @@
 .legal-prose p { max-width: 72ch; color: var(--color-muted); }
 .legal-prose a { color: var(--color-forest); font-weight: 550; }
 .legal-prose code { overflow-wrap: anywhere; }
+.legal-prose .project-evidence { scroll-margin-top: 7rem; }
+.legal-prose .project-evidence__context { padding-left: var(--space-4); border-left: 2px solid var(--color-aqua-dark); font-size: var(--text-sm); }
+.legal-prose .project-evidence blockquote { margin: 0; padding: var(--space-4) var(--space-6); border-left: 2px solid var(--color-aqua-dark); }
+.legal-prose .project-evidence__back { display: inline-flex; min-height: 44px; align-items: center; }
 
 .recovery-page { display: grid; min-height: 65vh; align-items: center; padding-block: var(--space-16); }
 .recovery-page__layout { display: grid; gap: var(--space-8); }

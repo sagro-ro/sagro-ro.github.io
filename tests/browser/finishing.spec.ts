@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { legalRoutes, primaryRoutes } from '../../src/data/routes';
+import { legalRoutes, primaryRoutes, supportingRoutes } from '../../src/data/routes';
 import { site } from '../../src/data/site';
 
-const indexedRoutes = [...primaryRoutes, ...legalRoutes];
+const indexedRoutes = [...primaryRoutes, ...supportingRoutes, ...legalRoutes];
 
 test('indexed content and legal pages have unique Romanian metadata and valid shell contacts', async ({ page }) => {
   const titles = new Set<string>();
@@ -32,6 +32,25 @@ test('indexed content and legal pages have unique Romanian metadata and valid sh
   }
 });
 
+test('four routes have exact unique titles without a duplicate Sagro suffix', async ({ page }) => {
+  const expectedTitles = {
+    '/sisteme-irigatii/': 'Sisteme de irigații proiectate pentru terenul fermei | Sagro Irigații',
+    '/service-mentenanta/': 'Service și mentenanță pentru echipamente de irigații | Sagro Irigații',
+    '/proiecte/': 'Proiecte de irigații documentate în România | Sagro Irigații',
+    '/contact/': 'Contact pentru sisteme de irigații și service | Sagro Irigații',
+  } as const;
+  const titles: string[] = [];
+
+  for (const [route, expectedTitle] of Object.entries(expectedTitles)) {
+    await page.goto(route);
+    const title = await page.title();
+    titles.push(title);
+    expect.soft(title, `${route} must not duplicate the brand suffix`).not.toContain('| Sagro |');
+    expect.soft(title, route).toBe(expectedTitle);
+  }
+  expect(new Set(titles).size).toBe(titles.length);
+});
+
 test('LocalBusiness JSON-LD uses verified facts without unsupported business claims', async ({ page }) => {
   await page.goto('/');
   const scripts = page.locator('script[type="application/ld+json"]');
@@ -45,9 +64,17 @@ test('LocalBusiness JSON-LD uses verified facts without unsupported business cla
     legalName: site.legalName,
     telephone: site.phoneDisplay,
     email: site.email,
-    address: site.address,
     url: 'https://sagro.ro/',
   });
+  expect(schema.address).toEqual({
+    '@type': 'PostalAddress',
+    streetAddress: 'Str. Primăverii 161',
+    addressLocality: 'Poiana Mare',
+    addressRegion: 'Dolj',
+    addressCountry: 'RO',
+  });
+  expect(schema.address).not.toHaveProperty('postalCode');
+  expect(schema.address).not.toHaveProperty('geo');
   expect(schema).not.toHaveProperty('aggregateRating');
   expect(schema).not.toHaveProperty('review');
   expect(schema).not.toHaveProperty('geo');
@@ -68,6 +95,7 @@ test('production sitemap and robots refer to the same canonical origin', async (
     expect(locations).toContain(`https://sagro.ro${route.href}`);
   }
   expect(locations.some((url) => url.includes('404'))).toBe(false);
+  expect(locations.some((url) => url.endsWith('/llms.txt'))).toBe(false);
 
   const robots = await request.get('/robots.txt');
   expect(robots.status()).toBe(200);
@@ -77,15 +105,31 @@ test('production sitemap and robots refer to the same canonical origin', async (
   expect(robotsText).toContain('Sitemap: https://sagro.ro/sitemap.xml');
 });
 
-test('static-host redirects preserve the three irrigation legacy journeys', async ({ request }) => {
+test('curated llms text uses plain-text responses without unsupported claims or statistics', async ({ request }) => {
+  const response = await request.get('/llms.txt');
+  expect(response.status()).toBe(200);
+  expect(response.headers()['content-type']).toBe('text/plain; charset=utf-8');
+  const content = await response.text();
+
+  expect(content).toContain('# Sagro Irigații');
+  expect(content).toContain('Formularul online nu este conectat');
+  expect(content).not.toMatch(/\b\d+%|\b\d+\+?\s+(?:proiecte|clienți|ani|instalații)/i);
+  expect(content).not.toMatch(/dealer autorizat|partener autorizat|certificat|acreditat|garan[țt]ie|recomand|indexare garantată|răspuns garantat|acoperire națională|mesaj trimis/i);
+});
+
+test('static-host rules list only seven reviewed relevant legacy mappings', async ({ request }) => {
   const response = await request.get('/_redirects');
   expect(response.status()).toBe(200);
   const rules = (await response.text()).split('\n').map((line) => line.trim()).filter((line) => line && !line.startsWith('#'));
 
   expect(rules).toEqual([
     '/pages/sisteme-irigatii /sisteme-irigatii/ 301',
-    '/pages/service /service-mentenanta/ 301',
     '/pages/contact /contact/ 301',
+    '/policies/privacy-policy /politica-confidentialitate/ 301',
+    '/pages/despre-noi /sisteme-irigatii/ 301',
+    '/products/sisteme-irigatii-zimmatic /sisteme-irigatii/ 301',
+    '/products/sisteme-idrofoglia /sisteme-irigatii/ 301',
+    '/products/generatoare-green-power /sisteme-irigatii/ 301',
   ]);
 });
 

@@ -47,6 +47,8 @@ test('service route has a distinct irrigation-maintenance workflow', async ({ pa
     await expect(content).toContainText(new RegExp(text, 'i'));
   }
   await expect(page.locator('[data-service-step]')).toHaveCount(4);
+  await expect(content).toContainText('evaluarea tehnică');
+  await expect(content).not.toContainText('evaluarea tehnica');
   await expect(page.locator('[data-offer-cta="service"] a').first()).toHaveAttribute('href', '/contact/?tip=service#formular');
   await expect(page.locator('[data-systems-link]')).toHaveAttribute('href', '/sisteme-irigatii/');
   await expect(content).not.toContainText(forbiddenMachineryClaims);

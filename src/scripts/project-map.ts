@@ -1,5 +1,6 @@
 import { projects, type Project } from '../data/projects';
 import { getMarkerPosition } from '../lib/map-geometry';
+import { getProjectSlugFromHash } from './project-fragment';
 
 const activeMaps = new WeakMap<HTMLElement, () => void>();
 
@@ -24,10 +25,20 @@ export function initProjectMap(root: HTMLElement): () => void {
     availableProjects.push({ project, ...position });
   }
 
+  const availableSlugs = availableProjects.map(({ project }) => project.slug);
+  const firstSlug = availableProjects[0].project.slug;
   const selectedProject = (slug: string | undefined) => projects.find((project) => project.slug === slug);
   const listeners: Array<{ button: HTMLButtonElement; listener: () => void }> = [];
   let selectedSlug: string | undefined;
+  let alignmentFrame: number | undefined;
 
+  const alignStory = (slug: string) => {
+    if (alignmentFrame !== undefined) cancelAnimationFrame(alignmentFrame);
+    alignmentFrame = requestAnimationFrame(() => {
+      alignmentFrame = undefined;
+      stories.find((story) => story.id === `proiect-${slug}`)?.scrollIntoView({ block: 'start' });
+    });
+  };
   const select = (slug: string, announce = true) => {
     const project = selectedProject(slug);
     if (!project || !availableProjects.some((available) => available.project.slug === slug)) return;
@@ -60,12 +71,26 @@ export function initProjectMap(root: HTMLElement): () => void {
     listeners.push({ button, listener });
   }
 
+  const handleHashChange = () => {
+    const fragmentSlug = getProjectSlugFromHash(window.location.hash, availableSlugs);
+    if (!fragmentSlug && window.location.hash) return;
+    const nextSlug = fragmentSlug ?? firstSlug;
+    select(nextSlug);
+    alignStory(nextSlug);
+  };
+
   mapControls.hidden = false;
   listControls.hidden = false;
   root.dataset.mapReady = 'true';
-  select(availableProjects[0].project.slug, false);
+  const initialFragmentSlug = getProjectSlugFromHash(window.location.hash, availableSlugs);
+  select(initialFragmentSlug ?? firstSlug, false);
+  if (initialFragmentSlug) alignStory(initialFragmentSlug);
+  window.addEventListener('hashchange', handleHashChange);
 
   const cleanup = () => {
+    window.removeEventListener('hashchange', handleHashChange);
+    if (alignmentFrame !== undefined) cancelAnimationFrame(alignmentFrame);
+    alignmentFrame = undefined;
     for (const { button, listener } of listeners) button.removeEventListener('click', listener);
     for (const button of buttons) button.setAttribute('aria-pressed', 'false');
     for (const button of mapButtons.values()) {
