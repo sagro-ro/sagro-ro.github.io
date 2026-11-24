@@ -117,7 +117,7 @@ test('curated llms text uses plain-text responses without unsupported claims or 
   expect(content).not.toMatch(/dealer autorizat|partener autorizat|certificat|acreditat|garan[țt]ie|recomand|indexare garantată|răspuns garantat|acoperire națională|mesaj trimis/i);
 });
 
-test('static-host rules list only seven reviewed relevant legacy mappings', async ({ request }) => {
+test('static-host rules list only the ten reviewed legacy mappings', async ({ request }) => {
   const response = await request.get('/_redirects');
   expect(response.status()).toBe(200);
   const rules = (await response.text()).split('\n').map((line) => line.trim()).filter((line) => line && !line.startsWith('#'));
@@ -130,6 +130,9 @@ test('static-host rules list only seven reviewed relevant legacy mappings', asyn
     '/products/sisteme-irigatii-zimmatic /sisteme-irigatii/ 301',
     '/products/sisteme-idrofoglia /sisteme-irigatii/ 301',
     '/products/generatoare-green-power /sisteme-irigatii/ 301',
+    '/pages/irigatii /sisteme-irigatii/ 301',
+    '/collections/all /sisteme-irigatii/ 301',
+    '/collections/piese-tractoare /sisteme-irigatii/ 301',
   ]);
 });
 

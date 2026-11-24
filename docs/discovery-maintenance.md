@@ -8,7 +8,7 @@ This document records local implementation and maintenance decisions. It does no
 
 ## Legacy URL decisions
 
-Each mapping below uses only the first-party historical material recorded in `docs/content-audit.md`. The old catalog and unrelated machinery content remain deliberately removed.
+The first seven mappings retain first-party historical material recorded in `docs/content-audit.md`. The site owner explicitly requested the last three fallbacks on 24 noiembrie 2026 after reviewing stale Google search links. Those browser fallbacks improve navigation to the current irrigation journey; they do not recreate the old catalog, assert that its contents were irrigation-only, or guarantee a search-index update. The old catalog and unrelated machinery content remain deliberately removed.
 
 | Legacy path | Current destination | Decision |
 | --- | --- | --- |
@@ -19,11 +19,13 @@ Each mapping below uses only the first-party historical material recorded in `do
 | `/products/sisteme-irigatii-zimmatic` | `/sisteme-irigatii/` | Retains the relevant Zimmatic/equipment context without a dealer-certification claim. |
 | `/products/sisteme-idrofoglia` | `/sisteme-irigatii/` | Retains the relevant irrigation/pumping context; Idrofoglia's experience is not attributed to Sagro. |
 | `/products/generatoare-green-power` | `/sisteme-irigatii/` | Retains generator support only as part of irrigation/off-grid power, not as a recreated generator catalog. |
+| `/pages/irigatii` | `/sisteme-irigatii/` | Owner-requested fallback from an old search-result URL to the current irrigation systems journey. |
+| `/collections/all` | `/sisteme-irigatii/` | Owner-requested fallback for a retired catalog landing page; no catalog content is recreated. |
+| `/collections/piese-tractoare` | `/sisteme-irigatii/` | Owner-requested fallback for a retired tractor-parts category; it does not claim that the category was irrigation equipment. |
 
 ### Routes deliberately not mapped
 
 - **`/pages/service`** documented tractors, combines, and farm machinery, including old warranties and specializations that do not apply to irrigation-only service. Its static fallback and declarative redirect are removed; the path uses ordinary 404 recovery in local static preview. Do not turn it into an irrigation-service redirect without a separately reviewed migration decision.
-- **`/pages/irigatii`** appeared in a sampled search result but lacks equivalent first-party source detail in the inspected documentation. No destination is inferred; it uses ordinary 404 recovery in local static preview.
 - **Other removed catalog/article URLs** remain excluded. Do not add wildcard redirects or recreate unrelated pages merely to avoid a 404.
 
 `public/_redirects` is a declarative inventory for a compatible host/CDN. **GitHub Pages does not execute these rules.** The `public/**/index.html` documents generate HTTP 200 browser fallbacks with noindex metadata, a canonical link, meta refresh, a visible destination link, and query/fragment-preserving JavaScript navigation. They are not direct destination 301/308 responses.

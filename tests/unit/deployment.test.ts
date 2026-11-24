@@ -12,6 +12,9 @@ const legacyRedirects = [
   ['/products/sisteme-irigatii-zimmatic', '/sisteme-irigatii/'],
   ['/products/sisteme-idrofoglia', '/sisteme-irigatii/'],
   ['/products/generatoare-green-power', '/sisteme-irigatii/'],
+  ['/pages/irigatii', '/sisteme-irigatii/'],
+  ['/collections/all', '/sisteme-irigatii/'],
+  ['/collections/piese-tractoare', '/sisteme-irigatii/'],
 ] as const;
 
 describe('GitHub Pages deployment', () => {

@@ -8,6 +8,9 @@ const legacyRedirects = [
   ['/products/sisteme-irigatii-zimmatic/', '/sisteme-irigatii/'],
   ['/products/sisteme-idrofoglia/', '/sisteme-irigatii/'],
   ['/products/generatoare-green-power/', '/sisteme-irigatii/'],
+  ['/pages/irigatii/', '/sisteme-irigatii/'],
+  ['/collections/all/', '/sisteme-irigatii/'],
+  ['/collections/piese-tractoare/', '/sisteme-irigatii/'],
 ] as const;
 
 test.use({ baseURL: 'http://127.0.0.1:4324' });
@@ -23,13 +26,11 @@ test.describe('static GitHub Pages legacy fallbacks', () => {
     }
   });
 
-  test('does not redirect non-equivalent or undocumented routes to irrigation service', async ({ page }) => {
-    for (const path of ['/pages/service/', '/pages/irigatii/']) {
-      const response = await page.goto(path);
-      expect(response?.status()).toBe(404);
-      await expect(page.locator('main h1')).toContainText(/nu a fost găsită/i);
-      expect(new URL(page.url()).pathname).toBe(path);
-    }
+  test('does not redirect non-equivalent machinery service to irrigation service', async ({ page }) => {
+    const response = await page.goto('/pages/service/');
+    expect(response?.status()).toBe(404);
+    await expect(page.locator('main h1')).toContainText(/nu a fost găsită/i);
+    expect(new URL(page.url()).pathname).toBe('/pages/service/');
   });
 
   test('recovery metadata points to its generated noindex document', async ({ page }) => {
@@ -45,10 +46,12 @@ test.describe('static GitHub Pages legacy fallbacks', () => {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
     try {
-      await page.goto('/pages/sisteme-irigatii/');
-      await expect(page).toHaveURL(/\/sisteme-irigatii\/$/);
-      await expect(page.locator('main h1')).toBeVisible();
-      await expect(page.getByRole('navigation', { name: 'Navigație principală' })).toBeVisible();
+      for (const [legacyPath, targetPath] of legacyRedirects) {
+        await page.goto(legacyPath);
+        await expect.poll(() => new URL(page.url()).pathname).toBe(targetPath);
+        await expect(page.locator('main h1')).toBeVisible();
+        await expect(page.getByRole('navigation', { name: 'Navigație principală' })).toBeVisible();
+      }
     } finally {
       await context.close();
     }

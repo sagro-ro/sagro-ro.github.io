@@ -73,7 +73,7 @@ The Romania geometry comes from `@svg-maps/romania` 2.0.0, based on MapSVG Roman
 
 `public/CNAME` configures the custom domain `sagro.ro`, and `public/.nojekyll` disables Jekyll processing so underscored Astro assets are served normally. Both files are copied into `dist/` during the build.
 
-The three `public/pages/.../index.html` documents provide GitHub Pages-compatible fallbacks for the old `/pages/...` URLs. JavaScript navigation preserves query strings and fragments; a meta refresh and a visible link retain access without JavaScript. These are HTML client-side fallbacks, **not HTTP 301 redirects**. They are excluded from indexing and point search engines to the canonical destination. The separate `public/_redirects` file remains available for Netlify-compatible hosts that support server redirects.
+The `public/**/index.html` documents provide GitHub Pages-compatible fallbacks for the reviewed legacy URLs. JavaScript navigation preserves query strings and fragments; a meta refresh and a visible link retain access without JavaScript. These are HTML client-side fallbacks, **not HTTP 301 redirects**. They are excluded from indexing and point search engines to the canonical destination. The separate `public/_redirects` file remains available for Netlify-compatible hosts that support server redirects.
 
 ### First-time repository and domain setup
 
@@ -87,7 +87,7 @@ The three `public/pages/.../index.html` documents provide GitHub Pages-compatibl
    - `185.199.111.153`
    If `www.sagro.ro` is also wanted, add a `www` CNAME pointing to `<github-username>.github.io` and configure `www.sagro.ro` separately in GitHub Pages. The `CNAME` file in this project is for GitHub Pages and does not modify the DNS provider.
 5. In **Settings → Pages → Custom domain**, enter `sagro.ro`, wait for the DNS check, and enable **Enforce HTTPS** after GitHub provisions the certificate. Keep the generated `CNAME` file in the repository; otherwise a later deployment can remove the custom-domain setting.
-6. Verify all primary routes, the legacy `/pages/...` links, canonical URLs, and the direct telephone/email actions on the published domain. Verify actual form delivery only after supplying and reviewing a real endpoint provider.
+6. Verify all primary routes, the reviewed legacy fallback links, canonical URLs, and the direct telephone/email actions on the published domain. Verify actual form delivery only after supplying and reviewing a real endpoint provider.
 
 The workflow does not create DNS records, issue certificates, configure a form provider, or prove that the public GitHub Pages deployment has occurred. Consult [GitHub's custom-domain documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site) if the domain registrar or DNS provider uses different record-management labels.
 
@@ -107,13 +107,20 @@ Redirect behavior depends on the host:
 
 | Mechanism | Host capability | Behavior |
 | --- | --- | --- |
-| `public/pages/.../index.html` | Static hosts such as GitHub Pages | Noindex HTML fallback with meta refresh, a visible destination link, and JavaScript navigation that preserves query strings and fragments. |
+| `public/**/index.html` | Static hosts such as GitHub Pages | Noindex HTML fallback with meta refresh, a visible destination link, and JavaScript navigation that preserves query strings and fragments. |
 | `public/_redirects` | Netlify-compatible platforms | Executes the configured HTTP 301 rules below when the platform supports this file. |
 
 ```text
 /pages/sisteme-irigatii /sisteme-irigatii/ 301
-/pages/service /service-mentenanta/ 301
 /pages/contact /contact/ 301
+/policies/privacy-policy /politica-confidentialitate/ 301
+/pages/despre-noi /sisteme-irigatii/ 301
+/products/sisteme-irigatii-zimmatic /sisteme-irigatii/ 301
+/products/sisteme-idrofoglia /sisteme-irigatii/ 301
+/products/generatoare-green-power /sisteme-irigatii/ 301
+/pages/irigatii /sisteme-irigatii/ 301
+/collections/all /sisteme-irigatii/ 301
+/collections/piese-tractoare /sisteme-irigatii/ 301
 ```
 
 Netlify-compatible hosts can consume `_redirects` directly. Other hosts need equivalent server/platform rules; its presence in `dist/` alone does not prove that a host executes redirects. Verify redirects, the real form provider and production deployment separately after choosing and configuring the host.

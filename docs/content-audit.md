@@ -46,9 +46,11 @@ The bundled Romania map is from `@svg-maps/romania` 2.0.0, viewBox `0 0 613 433`
 
 ## Legacy migration and project-source follow-up — 24 noiembrie 2026
 
-The historical source observations above remain unchanged. The implementation prepared on 24 noiembrie 2026 adds explicit handling only for legacy URLs whose relevant material is represented in this audit: the irrigation page, contact, privacy policy, about page, Zimmatic, Idrofoglia, and Green Power. See `docs/discovery-maintenance.md` for the exact destinations.
+The historical source observations above remain unchanged. The initial implementation prepared on 24 noiembrie 2026 added explicit handling only for legacy URLs whose relevant material is represented in this audit: the irrigation page, contact, privacy policy, about page, Zimmatic, Idrofoglia, and Green Power. See `docs/discovery-maintenance.md` for the exact destinations.
 
-The old machinery-service URL is deliberately not redirected to `/service-mentenanta/`: the scopes are not equivalent. The undocumented `/pages/irigatii` search sample is not enough evidence for another mapping. Neither decision adds back the removed catalog or transfers old machinery claims to irrigation service.
+Initially, the old machinery-service URL was deliberately not redirected to `/service-mentenanta/`: the scopes are not equivalent. The undocumented `/pages/irigatii` search sample was not then considered enough evidence for another mapping. Neither decision added back the removed catalog or transferred old machinery claims to irrigation service.
+
+**Fallback update on 24 noiembrie 2026:** Following an explicit site-owner request based on current Google results, `/pages/irigatii`, `/collections/all`, and `/collections/piese-tractoare` now have browser fallbacks and matching declarative rules pointing to `/sisteme-irigatii/`. This supersedes the earlier hold on `/pages/irigatii` and the exclusion of these two collection routes. The change is a navigation decision, not new historical evidence or a claim of content equivalence; it does not restore catalog text or transfer old machinery claims. `/pages/service` remains unmapped, and no wildcard redirects were added.
 
 Project cards now point to an owner-controlled source-context page rather than implying that the former `/pages/sisteme-irigatii` URL still exposes the recorded stories in their old form. The 12 noiembrie 2026 date is the date of this content review, not an inferred original publication or commissioning date. Sagro-published project material is not independent verification; seasonal wording remains historical and does not update automatically.
 
