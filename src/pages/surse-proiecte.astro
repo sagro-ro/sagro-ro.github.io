@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CountyGallery from '../components/projects/CountyGallery.astro';
+import { countyMedia } from '../data/county-media';
 import { projectEvidenceNote } from '../data/project-evidence';
 import { projects } from '../data/projects';
 import '../styles/legal.css';
@@ -25,17 +27,23 @@ import '../styles/legal.css';
         <p>Poți selecta fiecare județ în <a href="/proiecte/">harta localităților</a> pentru a vedea lista localităților.</p>
       </section>
 
-      {projects.map((project) => (
-        <section class="project-evidence" id={`sursa-${project.slug}`} data-project-evidence>
-          <p class="eyebrow">Județul {project.countyLabel}</p>
-          <h2>Localități în județul {project.countyLabel}</h2>
-          <p class="project-evidence__context" data-project-evidence-context>{projectEvidenceNote}</p>
-          <ul data-project-localities>
-            {project.localities.map((locality) => <li>{locality}</li>)}
-          </ul>
-          <p><a class="project-evidence__back" href={`/proiecte/#proiect-${project.slug}`}>Vezi județul în hartă</a></p>
-        </section>
-      ))}
+      {projects.map((project) => {
+        const photos = countyMedia[project.slug];
+        return (
+          <section class="project-evidence" id={`sursa-${project.slug}`} data-project-evidence>
+            <p class="eyebrow">Județul {project.countyLabel}</p>
+            <h2>Localități în județul {project.countyLabel}</h2>
+            <p class="project-evidence__context" data-project-evidence-context>{projectEvidenceNote}</p>
+            <ul data-project-localities>
+              {project.localities.map((locality) => <li>{locality}</li>)}
+            </ul>
+            {photos && photos.length > 0 && (
+              <CountyGallery countySlug={project.slug} countyLabel={project.countyLabel} photos={photos} />
+            )}
+            <p><a class="project-evidence__back" href={`/proiecte/#proiect-${project.slug}`}>Vezi județul în hartă</a></p>
+          </section>
+        );
+      })}
     </div>
   </article>
 </BaseLayout>

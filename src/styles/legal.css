@@ -30,6 +30,29 @@
 .legal-prose .project-evidence blockquote { margin: 0; padding: var(--space-4) var(--space-6); border-left: 2px solid var(--color-aqua-dark); }
 .legal-prose .project-evidence__back { display: inline-flex; min-height: 44px; align-items: center; }
 
+.legal-prose .county-gallery { display: grid; gap: var(--space-3); margin-top: var(--space-2); }
+.county-gallery__grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--space-4); }
+.county-gallery__item { flex: var(--photo-ratio) 1 0; min-width: min(8rem, 100%); max-width: 100%; }
+.legal-prose .county-gallery__thumbnail { position: relative; display: block; overflow: hidden; border: 1px solid var(--color-line); border-radius: 0.75rem; background: var(--color-paper); }
+.county-gallery__thumbnail img { width: 100%; height: auto; aspect-ratio: var(--photo-ratio); object-fit: contain; }
+.county-gallery__expand { position: absolute; right: var(--space-3); bottom: var(--space-3); display: grid; width: 36px; height: 36px; place-items: center; border-radius: 50%; background: var(--color-white); color: var(--color-forest); box-shadow: 0 2px 12px rgb(0 0 0 / 18%); }
+.county-gallery__caption { padding-top: var(--space-2); color: var(--color-muted); font-size: var(--text-sm); line-height: 1.5; text-align: left; }
+.county-gallery__dialog { width: calc(100% - var(--space-4)); max-width: 96rem; height: calc(100% - var(--space-4)); height: calc(100dvh - var(--space-4)); max-height: none; margin: auto; padding: var(--space-4); overflow: auto; border: 1px solid var(--color-forest-soft); border-radius: 1rem; background: var(--color-forest-deep); color: var(--color-white); overscroll-behavior: contain; }
+.county-gallery__dialog[open] { display: grid; }
+.county-gallery__dialog::backdrop { background: rgb(4 15 12 / 86%); }
+.county-gallery__viewer { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: var(--space-3); width: 100%; height: 100%; min-height: 0; }
+.county-gallery__header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.county-gallery__header h4 { max-width: 30ch; font-size: var(--text-lg); text-align: left; }
+.county-gallery__stage { display: grid; min-height: 0; overflow: auto; place-items: center; }
+.legal-prose .county-gallery__slide { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: var(--space-2); width: 100%; height: 100%; min-height: 0; margin: 0; }
+.county-gallery__slide-image { justify-self: center; width: auto; height: auto; max-width: 100%; max-height: calc(100dvh - 15rem); object-fit: contain; border-radius: 0.25rem; }
+.legal-prose .county-gallery__slide-caption { max-width: 100%; color: var(--color-white); font-size: var(--text-sm); text-align: center; }
+.county-gallery__controls { display: grid; grid-template-columns: 48px auto 48px; align-items: center; justify-content: center; gap: var(--space-4); }
+.legal-prose .county-gallery__control { display: grid; width: 48px; height: 48px; flex-shrink: 0; place-items: center; padding: 0; border: 1px solid var(--color-forest-soft); border-radius: 50%; background: transparent; color: var(--color-white); }
+.legal-prose .county-gallery__control:hover { border-color: var(--color-aqua); color: var(--color-aqua); }
+.legal-prose .county-gallery__control:disabled { cursor: default; opacity: 0.4; }
+.legal-prose .county-gallery__counter { margin: 0; color: var(--color-white); font-size: var(--text-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
 .recovery-page { display: grid; min-height: 65vh; align-items: center; padding-block: var(--space-16); }
 .recovery-page__layout { display: grid; gap: var(--space-8); }
 .recovery-page__code { color: var(--color-aqua-dark); font-family: var(--font-display); font-size: clamp(6rem, 20vw, 16rem); font-weight: 500; letter-spacing: -0.07em; line-height: 0.8; }

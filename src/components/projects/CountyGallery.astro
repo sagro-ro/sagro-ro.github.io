@@ -1,0 +1,103 @@
+---
+import { ChevronLeft, ChevronRight, Maximize2, X } from '@lucide/astro';
+import type { CountyPhoto } from '../../data/county-media';
+import { getFullSizeSourceUrl, resolveSourceImage } from '../media/local-images';
+import SourceImage from '../media/SourceImage.astro';
+
+interface Props {
+  /** Unique within the source page; used to associate dialog labels and slides. */
+  countySlug: string;
+  countyLabel: string;
+  photos: readonly CountyPhoto[];
+}
+
+const { countySlug, countyLabel, photos } = Astro.props;
+const galleryPrefix = `galerie-${countySlug}`;
+const items = await Promise.all(photos.map(async (photo, index) => {
+  const image = resolveSourceImage(photo);
+  return {
+    photo,
+    href: await getFullSizeSourceUrl(photo),
+    ratio: image.width / image.height,
+    id: `${galleryPrefix}-fotografie-${index + 1}`,
+  };
+}));
+---
+{items.length > 0 && (
+  <div class="county-gallery" data-county-gallery={countySlug}>
+    <h3>Fotografii din județul {countyLabel}</h3>
+    <div class="county-gallery__grid">
+      {items.map(({ photo, href, ratio }, index) => (
+        <figure class="county-gallery__item" style={`--photo-ratio: ${ratio};`}>
+          <a
+            class="county-gallery__thumbnail"
+            href={href}
+            data-gallery-open={index}
+            aria-label={`Deschide fotografia ${index + 1}: ${photo.alt}`}
+          >
+            <SourceImage
+              record={photo}
+              widths={[480, 800, 1200, 1600]}
+              sizes="(min-width: 56rem) 32rem, 60vw"
+            />
+            <span class="county-gallery__expand" aria-hidden="true"><Maximize2 size={18} /></span>
+          </a>
+          <figcaption class="county-gallery__caption">{photo.caption}</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <dialog class="county-gallery__dialog" aria-labelledby={`${galleryPrefix}-titlu`} data-gallery-dialog>
+      <div class="county-gallery__viewer">
+        <header class="county-gallery__header">
+          <h4 id={`${galleryPrefix}-titlu`}>Galerie foto din județul {countyLabel}</h4>
+          <button class="county-gallery__control" type="button" aria-label="Închide galeria" data-gallery-close autofocus>
+            <X size={24} aria-hidden="true" />
+          </button>
+        </header>
+        <div class="county-gallery__stage">
+          {items.map(({ photo, id }, index) => (
+            <figure class="county-gallery__slide" id={id} data-gallery-slide={index} hidden={index !== 0}>
+              <SourceImage
+                record={photo}
+                class="county-gallery__slide-image"
+                widths={[640, 960, 1200, 1600]}
+                sizes="(min-width: 96rem) 88rem, 96vw"
+              />
+              <figcaption class="county-gallery__slide-caption">{photo.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <div class="county-gallery__controls">
+          <button
+            class="county-gallery__control"
+            type="button"
+            aria-label="Fotografia anterioară"
+            data-gallery-previous
+            disabled={items.length === 1}
+          >
+            <ChevronLeft size={26} aria-hidden="true" />
+          </button>
+          <p class="county-gallery__counter" data-gallery-counter aria-live="polite" aria-atomic="true">
+            1 / {items.length}
+          </p>
+          <button
+            class="county-gallery__control"
+            type="button"
+            aria-label="Fotografia următoare"
+            data-gallery-next
+            disabled={items.length === 1}
+          >
+            <ChevronRight size={26} aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+    </dialog>
+  </div>
+)}
+<script>
+  import { initCountyGallery } from '../../scripts/county-gallery';
+  for (const root of document.querySelectorAll<HTMLElement>('[data-county-gallery]')) {
+    initCountyGallery(root);
+  }
+</script>

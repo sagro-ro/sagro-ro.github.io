@@ -3,10 +3,33 @@
 **Initial verification:** 2026-11-12  
 **Previous verification including GitHub Pages preparation:** 2026-11-23
 **Previous discovery-readiness verification:** 2026-11-24
-**Latest county-grouped locality-map verification:** 2026-11-24
-**Scope:** the complete standalone Astro implementation in the isolated discovery-readiness worktree, including the supplied six-county/13-locality map, source, unit/data checks, real Chromium interaction, responsive layouts, production output, current content provenance, and visual evidence.
+**Previous county-grouped locality-map verification:** 2026-11-24
+**Latest supplied county-photo gallery verification:** 2026-11-25
+**Scope:** the complete standalone Astro implementation in the isolated discovery-readiness worktree, including the supplied six-county/13-locality map, county-level Olt photographs, source, unit/data checks, real Chromium interaction, responsive layouts, production output, current content provenance, and visual evidence.
 
 This is a local implementation and verification record. It is not evidence of production deployment, live enquiry delivery, host-level redirects, or accessibility certification. The first dated section below is the current result. Every later section retains earlier observations and historical counts; in particular, the former three-project stories, their source statements, and their test totals are historical and are not evidence for the supplied locality list.
+
+## Supplied Olt county-photo gallery verification — 2026-11-25
+
+The two owner-supplied originals were imported unchanged as `src/assets/projects/olt/olt1.jpeg` and `olt2.jpeg`; fresh SHA-256 comparisons matched `/home/lgelca/Downloads/corabia/olt1.jpeg` and `olt2.jpeg`. Their SHA-256 values are respectively `0d494602aec71e98d9507a9e8324f23db785d2b325239e83ae766bc258bd6e2f` and `e4983738ff564b55910566e824caf6bd9f9fb5babc5c1cf45b374215c0cf7363`. No external source URL was fabricated. The gallery is county-level only and does not assign the photographs to Corabia, Vișina, exact premises, customers, commissioning dates, or results.
+
+The final fresh checks exited successfully before this documentation-only verification update:
+
+| Command | Observed result |
+| --- | --- |
+| `npm run typecheck` | **86 files checked; 0 errors, 0 warnings, 0 hints**. |
+| `npm test` | **16 test files and 113/113 tests passed**, including JPEG/PNG/WebP/AVIF source discovery with case-insensitive extensions, synthetic three-/four-photo counties, unique dialog IDs, zero/one-photo handling, arbitrary wraparound arithmetic, and initial Olt-only provenance assertions. |
+| `npm run build` | **9 Astro pages built** with hashed local Olt WebP assets and the exact approved locality note retained in generated output. |
+| `npx playwright test` | **99/99 Chromium tests passed**, including all @a11y cases and the complete pre-existing browser suite. |
+| `npm run test:a11y` | **18/18 scoped axe cases passed**, with no serious or critical violations in the tested landmarks/open components. |
+
+The nine focused gallery-browser checks cover real static-preview image URLs and intrinsic dimensions, keyboard opening and dialog naming, selected-photo/counter behavior, next/previous and arrow-key wrapping, Escape focus restoration, close button and genuine outside-backdrop dismissal, interior non-dismissal, uncropped landscape and portrait geometry at **320, 375, 768 and 1440px**, controls in view, independent gallery state, listener cleanup while open with focus/scroll restoration, reduced motion, no autoplay/URL navigation, and real production-preview optimized image navigation without JavaScript. The cleanup regression initially reproduced lingering navigation listeners and a retained `body` overflow lock before stable listener references and explicit open-dialog restoration were verified. The no-JavaScript production-URL assertion then reproduced the development-only `/_image/` coverage gap before the test was moved to the static preview and its required hashed `/_astro/olt1.*.webp` destination.
+
+The independent interaction, scalability, and regression review returned no interaction finding, one Important future-input-format defect, and one Minor stale verification-count finding. The format candidate survived adversarial verification: WebP, AVIF, and uppercase-JPG records were absent from the original lowercase JPEG/PNG-only discovery. Three real resolver fixtures reproduced **3/3 failures** before case-insensitive JPEG, PNG, WebP, and AVIF discovery was enabled; the focused cases then passed **3/3**, followed by the complete gate. The Minor count mismatch created during that fix is corrected above. The review's development-only no-JavaScript coverage concern was separately reproduced and resolved as described above; the production component itself required no change for that test-harness correction.
+
+Six production-preview screenshots in `/tmp/sagro-gallery-verification-20261125/` show the closed gallery and both enlarged photos at **1440×1000** and **375×812**. All were opened and visually inspected after image decoding; natural ratios, readable captions, visible controls, and complete equipment are retained. Reported horizontal overflow and uncaught page errors were both **0**. The screenshots use the generated `/_astro/olt1.*.webp` and `/_astro/olt2.*.webp` assets. Scoped axe checks are regression evidence, not WCAG certification; Safari, Firefox, physical devices, and assistive-technology sessions were not tested.
+
+The five-field `Project` schema, six counties, 13 localities, and existing photographic provenance registry remain structurally unchanged. README, third-party notices, content audit, and maintenance guidance distinguish these locally supplied images from legacy media with external source URLs. This feature remains local and uncommitted; no commit, push, merge, PR, deployment, Search Console action, or external form action was performed.
 
 ## County-grouped locality map verification — 2026-11-24
 

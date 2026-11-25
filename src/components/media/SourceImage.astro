@@ -1,9 +1,9 @@
 ---
 import { Image } from 'astro:assets';
-import type { MediaRecord } from '../../data/media';
+import { resolveSourceImage, type SourceImageReference } from './local-images';
 
 interface Props {
-  record: MediaRecord;
+  record: SourceImageReference;
   class?: string;
   sizes?: string;
   widths?: number[];
@@ -18,12 +18,7 @@ const {
   eager = false,
 } = Astro.props;
 
-const sources = import.meta.glob<ImageMetadata>('../../assets/**/*.{png,jpg,jpeg}', {
-  eager: true,
-  import: 'default',
-});
-const image = sources[record.src.replace('../assets/', '../../assets/')];
-if (!image) throw new Error(`Missing reviewed local media: ${record.src}`);
+const image = resolveSourceImage(record);
 
 const responsiveWidths = [...new Set(
   (widths ?? [Math.round(image.width / 2), image.width])

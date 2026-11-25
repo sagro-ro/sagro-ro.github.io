@@ -40,7 +40,7 @@ Irrigation after-installation service, periodic checks, technical interventions 
 
 ## Asset provenance
 
-Only public Sagro/Shopify logo, irrigation, equipment and partner assets selected for local use are imported. Original URLs and reviewed alt text are stored in `src/data/media.ts`. Brand art is never described as a particular customer's installation unless the source page explicitly establishes that relationship.
+Legacy Sagro/Shopify logo, irrigation, equipment and partner assets selected for local use are imported from their recorded public origins. Original URLs and reviewed alt text are stored in `src/data/media.ts`. Brand art is never described as a particular customer's installation unless the source page explicitly establishes that relationship. Site-owner-supplied county photographs are recorded separately below rather than assigned a fabricated external URL.
 
 The bundled Romania map is from `@svg-maps/romania` 2.0.0, viewBox `0 0 613 433`. Its README identifies the source as MapSVG's Romania map, https://mapsvg.com/maps/romania, under CC BY 4.0; attribution is preserved in `THIRD_PARTY_NOTICES.md` and the project-map UI.
 
@@ -55,3 +55,9 @@ Initially, the old machinery-service URL was deliberately not redirected to `/se
 Project cards now point to an owner-controlled source-context page rather than implying that the former `/pages/sisteme-irigatii` URL still exposes the recorded stories in their old form. The 12 noiembrie 2026 date is the date of this content review, not an inferred original publication or commissioning date. Sagro-published project material is not independent verification; seasonal wording remains historical and does not update automatically.
 
 **Superseded on 24 noiembrie 2026:** the project-source follow-up above is replaced by the current six-county/13-locality supplied-list model documented in `docs/discovery-maintenance.md`. Current cards and evidence sections no longer retain the three historical stories, seasonal wording, or former source relationship. No old statement in this audit supports or independently verifies the supplied localities.
+
+## Supplied Olt county photographs — 25 noiembrie 2026
+
+The site owner supplied two local files, now `src/assets/projects/olt/olt1.jpeg` and `olt2.jpeg`, for a county-level Olt gallery. No external source URL was supplied or created. The delivery path does not independently establish copyright ownership, equipment provenance, commissioning, a customer relationship, or project results.
+
+The photographs are associated only with the existing Olt county record through `src/data/county-media.ts`; neither the locality list nor the five-field `Project` schema changed. In particular, the photographs are not assigned to Corabia or Vișina and do not identify exact premises or coordinates. Their reviewed descriptions are limited to visible irrigation equipment and the owner-supplied county attribution. This gallery is not independent project verification.

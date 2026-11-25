@@ -62,6 +62,28 @@ test('skip link is the first keyboard stop and has a visible focus indicator', a
   await expect(page.locator('main#continut')).toBeFocused();
 });
 
+test('@a11y open county gallery and both photographs have no serious or critical axe violations', async ({ page }) => {
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 375, height: 812 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/surse-proiecte/#sursa-olt');
+    const gallery = page.locator('[data-county-gallery="olt"]');
+    await gallery.locator('[data-gallery-open]').first().click();
+    const dialog = gallery.locator('dialog[open]');
+    await expect(dialog).toBeVisible();
+    for (const [index, counter] of ['1 / 2', '2 / 2'].entries()) {
+      if (index > 0) await dialog.getByRole('button', { name: 'Fotografia următoare' }).click();
+      await expect(dialog.locator('[data-gallery-counter]')).toHaveText(counter);
+      const results = await new AxeBuilder({ page })
+        .include('dialog[open]')
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .analyze();
+      expect(results.violations.filter((violation) => violation.impact === 'serious' || violation.impact === 'critical')
+        .map((violation) => ({ id: violation.id, targets: violation.nodes.map((node) => node.target) }))).toEqual([]);
+    }
+    await page.keyboard.press('Escape');
+  }
+});
+
 test('content images retain explicit meaningful alternatives', async ({ page }) => {
   for (const route of routes) {
     await page.goto(route.href);

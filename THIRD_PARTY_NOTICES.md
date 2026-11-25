@@ -2,7 +2,7 @@
 
 ## Sagro source media
 
-The local images in `src/assets/` were copied from Sagro's existing public website and its Shopify CDN. Their visual content was reviewed before use. Editorial photographs and equipment illustrations are not evidence that a particular documented project used the pictured equipment or location.
+The legacy local images listed below were copied from Sagro's existing public website and its Shopify CDN. Site-owner-supplied county photographs are recorded separately in the next section. Their visual content was reviewed before use. Editorial photographs and equipment illustrations are not evidence that a particular documented project used the pictured equipment or location.
 
 Rights remain with their respective holders. These local copies preserve the source-origin records below so future maintainers can verify replacement or reuse requirements.
 
@@ -20,6 +20,17 @@ Rights remain with their respective holders. These local copies preserve the sou
 | `partners/green-power.png` | https://sagro.ro/cdn/shop/files/3.png?v=1769429899 |
 
 Zimmatic, Idrofoglia and Green Power names and marks belong to their respective owners. Their inclusion reflects the references published on Sagro's irrigation website; this site does not assert certification, exclusive distribution or warranty terms.
+
+## Site-owner-supplied county photographs
+
+The following files were supplied locally by the site owner on 25 noiembrie 2026 for county-level use on `/surse-proiecte/`. No external origin URL was supplied or fabricated. “Site-owner-supplied” records the delivery path; it does not independently establish copyright ownership. Rights remain with their respective holders.
+
+| Local file | Supplied provenance and use |
+| --- | --- |
+| `projects/olt/olt1.jpeg` | Supplied for the Olt county gallery; landscape irrigation-pivot photograph. |
+| `projects/olt/olt2.jpeg` | Supplied for the Olt county gallery; portrait irrigation-structure photograph. |
+
+These photographs are not assigned to individual localities, exact premises, customers, commissioning dates, or measured results. Their inclusion is not independent verification of a project or equipment at a particular location.
 
 ## Romania county geometry
 

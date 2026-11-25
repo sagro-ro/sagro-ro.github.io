@@ -61,7 +61,9 @@ County records automatically create map/list controls and county cards. The map 
 
 ### Images and attribution
 
-Review an image visually before assigning an alt description. Add its local path and exact origin to `src/data/media.ts` and `THIRD_PARTY_NOTICES.md`; keep original query parameters in the source URL. Use `SourceImage.astro` rather than introducing remote runtime image URLs.
+Review an image visually before assigning an alt description. For media recovered from the former public site, add its local path and exact origin to `src/data/media.ts` and `THIRD_PARTY_NOTICES.md`; keep original query parameters in the source URL. Use `SourceImage.astro` rather than introducing remote runtime image URLs.
+
+Site-owner-supplied county photographs are a separate record type, not additions to `src/data/media.ts` or the five-field locality schema. Place JPEG, PNG, WebP, or AVIF inputs (with case-insensitive extensions) in `src/assets/projects/<county-slug>/`, then add ordered alt/caption records to `src/data/county-media.ts`. `CountyGallery.astro` handles any nonempty photo list and additional counties without a new viewer or locality changes, while Astro supplies optimized WebP output. Record the supplied date and provenance in `THIRD_PARTY_NOTICES.md` and `docs/content-audit.md`; do not fabricate an external source URL, infer copyright ownership, or attribute a county photograph to a particular locality, premises, customer, commissioning date, or result.
 
 Partner imagery is currently limited to Zimmatic, Idrofoglia and Green Power references from Sagro's irrigation page. Inclusion does not establish certification, exclusivity or warranty terms.
 
@@ -101,7 +103,7 @@ npx playwright test
 npm run test:a11y
 ```
 
-Vitest owns data/unit tests. Playwright owns browser tests and starts three local servers: the main unconfigured development site on port 4321, an intercepted transport-test instance on port 4322, and a statically built preview on port 4324 for the legacy fallback documents. The second instance is not a live form provider. The static preview approximates local file delivery; it does not prove GitHub's public hosting, DNS, TLS or HTTP redirect behavior. Axe accessibility cases are tagged `@a11y`.
+Vitest owns data/unit tests, including generic Astro county-gallery rendering. Playwright owns browser tests and starts three local servers: the main unconfigured development site on port 4321, an intercepted transport-test instance on port 4322, and a statically built preview on port 4324 for legacy fallback documents and optimized county-photo URLs. The second instance is not a live form provider. The static preview approximates local file delivery; it does not prove GitHub's public hosting, DNS, TLS or HTTP redirect behavior. Axe accessibility cases are tagged `@a11y`.
 
 Redirect behavior depends on the host:
 
