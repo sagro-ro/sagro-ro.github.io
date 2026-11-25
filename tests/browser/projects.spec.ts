@@ -29,6 +29,7 @@ test('project route presents supplied county localities and map attribution', as
     await expect(story.locator('.project-story__location')).toHaveText(`Județul ${project.countyLabel}`);
     await expect(story.locator('[data-project-localities] li')).toHaveText(project.localities);
     await expect(story.locator('.project-source')).toHaveAttribute('href', project.sourceUrl);
+    await expect(story.locator('.project-source')).toHaveText('Vezi fotografii proiecte');
     await expect(story.locator('.project-source')).not.toHaveAttribute('target', '_blank');
     await expect(map.locator(`[data-map-controls] [data-project-slug="${project.slug}"] > span`)).toHaveText(String(index + 1).padStart(2, '0'));
   }
